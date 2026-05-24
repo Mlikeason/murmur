@@ -1,0 +1,14 @@
+{
+  "name": "碎碎念 · Murmur",
+  "short_name": "碎碎念",
+  "description": "A tap-only daily journal that turns your tags into a poem.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "icons/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}
