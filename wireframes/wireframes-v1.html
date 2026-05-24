@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>主题 · Wireframes v1</title>
+<style>
+  :root {
+    --paper: #f4f2ec;
+    --ink: #1a1a1a;
+    --ink-2: #5b5b5b;
+    --ink-3: #9a9a9a;
+    --line: #d9d4c7;
+    --line-soft: #e7e3d6;
+    --frame: #ffffff;
+    --accent: #b3553a;
+    --accent-soft: #f1d7cc;
+    --chip: #f0ede4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 1320px; margin: 0 auto; padding: 64px 48px 96px; }
+  header.title { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 24px; margin-bottom: 56px; }
+  header.title h1 { font-family: "Times New Roman", "Songti SC", serif; font-weight: 400; font-size: 40px; letter-spacing: 0.5px; margin: 0; }
+  header.title h1 em { font-style: normal; color: var(--ink-3); margin-left: 16px; font-size: 18px; }
+  header.title .meta { color: var(--ink-3); font-size: 13px; letter-spacing: 0.3px; }
+  .lede { color: var(--ink-2); font-size: 15px; line-height: 1.7; max-width: 720px; margin: -24px 0 56px; }
+
+  .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .frame-col { display: flex; flex-direction: column; }
+  .frame-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .frame-title { font-family: "Times New Roman", "Songti SC", serif; font-size: 22px; font-weight: 400; margin: 0 0 24px; }
+  .device { background: var(--frame); border-radius: 28px; box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 24px 40px -24px rgba(40,30,15,0.18); padding: 28px 22px 36px; aspect-ratio: 9/19; display: flex; flex-direction: column; }
+
+  .status { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--ink-3); letter-spacing: 0.5px; margin-bottom: 28px; }
+
+  /* Screen 1 */
+  .day-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+  .day-num { font-family: "Times New Roman", "Songti SC", serif; font-size: 56px; line-height: 0.9; font-weight: 400; }
+  .day-meta { text-align: right; font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+  .day-meta .month { display: block; color: var(--ink-3); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .section-label { font-size: 11px; letter-spacing: 1.4px; color: var(--ink-3); text-transform: uppercase; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label .ai-mark { font-size: 10px; color: var(--accent); border: 1px solid var(--accent-soft); padding: 2px 6px; border-radius: 999px; letter-spacing: 0.6px; text-transform: none; }
+  .section-label .hint { color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 11px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+  .chip { font-size: 13px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: transparent; line-height: 1; }
+  .chip.muted { color: var(--ink-3); }
+  .chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip.ai { border-style: dashed; border-color: var(--accent-soft); color: var(--accent); }
+  .chip.ai.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .footer-cta { margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line-soft); font-size: 13px; color: var(--ink-2); }
+  .footer-cta .save { color: var(--ink-3); font-size: 11px; letter-spacing: 0.5px; }
+  .footer-cta .next { font-weight: 500; }
+
+  /* Screen 2 — calendar */
+  .cal-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; }
+  .cal-head .month-name { font-family: "Times New Roman", "Songti SC", serif; font-size: 28px; }
+  .cal-head .nav { color: var(--ink-3); font-size: 14px; letter-spacing: 2px; }
+  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .weekdays { font-size: 10px; color: var(--ink-3); letter-spacing: 0.5px; margin-bottom: 6px; }
+  .weekdays span { text-align: center; }
+  .grid { gap: 4px; }
+  .cell { aspect-ratio: 1/1.05; border: 1px solid var(--line-soft); border-radius: 4px; padding: 4px; display: flex; flex-direction: column; justify-content: space-between; font-size: 10px; color: var(--ink-2); position: relative; }
+  .cell.faded { color: var(--ink-3); border-color: transparent; }
+  .cell .dot { width: 8px; height: 8px; border-radius: 999px; align-self: flex-end; }
+  .cell.today { border-color: var(--ink); }
+  .cell.empty .dot { background: transparent; border: 1px dashed var(--line); }
+  /* Color tokens for tags */
+  .t-work { background: #2c3e50; }
+  .t-play { background: #d8a23a; }
+  .t-rest { background: #b8b3a3; }
+  .t-travel { background: #4a7d6d; }
+  .t-photo { background: #c46a52; }
+  .t-learn { background: #6b4f8a; }
+
+  .legend { margin-top: 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 12px; font-size: 11px; color: var(--ink-2); }
+  .legend .ll { display: flex; align-items: center; gap: 8px; }
+  .legend .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+
+  .preview { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-2); line-height: 1.55; }
+  .preview .pdate { color: var(--ink-3); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
+
+  /* Screen 3 — monthly report */
+  .rep-head { margin-bottom: 22px; }
+  .rep-month { font-family: "Times New Roman", "Songti SC", serif; font-size: 36px; line-height: 1; }
+  .rep-sub { font-size: 11px; color: var(--ink-3); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; }
+
+  .narrative { font-size: 13.5px; line-height: 1.75; color: var(--ink); margin-bottom: 26px; }
+  .narrative b { font-weight: 600; }
+  .narrative .accent { color: var(--accent); }
+
+  .stat-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 26px; }
+  .stat { display: grid; grid-template-columns: 60px 1fr 32px; align-items: center; gap: 10px; font-size: 12px; }
+  .stat .name { color: var(--ink-2); }
+  .stat .bar { height: 6px; background: var(--line-soft); border-radius: 999px; overflow: hidden; position: relative; }
+  .stat .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; }
+  .stat .num { text-align: right; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  .heat { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 6px; }
+  .heat .h { aspect-ratio: 1/1; border-radius: 2px; background: var(--line-soft); }
+  .heat .h.l1 { background: #e6dcc7; }
+  .heat .h.l2 { background: #c9b894; }
+  .heat .h.l3 { background: #8c724b; }
+  .heat .h.l4 { background: var(--accent); }
+  .heat-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-3); margin-top: 4px; }
+
+  .observe { background: #faf7ee; border: 1px solid var(--line-soft); border-radius: 8px; padding: 14px; font-size: 12.5px; line-height: 1.65; color: var(--ink); }
+  .observe .tag { font-size: 10px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+  /* Notes column */
+  .notes { margin-top: 24px; padding-top: 18px; border-top: 1px dashed var(--line); font-size: 12.5px; line-height: 1.7; color: var(--ink-2); }
+  .notes ol { margin: 0; padding-left: 18px; }
+  .notes li { margin-bottom: 6px; }
+  .notes b { color: var(--ink); font-weight: 500; }
+
+  footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 12px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="title">
+    <h1>主题 <em>Wireframes · v1</em></h1>
+    <div class="meta">2026.05.24 · 三屏初稿</div>
+  </header>
+
+  <p class="lede">
+    三个核心屏：<b>记录</b>（极少标签 + 一次 AI 展开）、<b>日历</b>（一格一天，颜色编码主标签）、<b>月报</b>（叙事 + 简单可视化，AI 在这里发力）。
+    暂不加运程类元素。日报不生成。配色和字体仅作示意,正式产品时再单独定。
+  </p>
+
+  <div class="frames">
+
+    <!-- ============== Screen 1: 记录页 ============== -->
+    <div class="frame-col">
+      <div class="frame-label">01 · Record</div>
+      <h2 class="frame-title">今天是什么样的一天</h2>
+
+      <div class="device">
+        <div class="status"><span>9:24</span><span>记录 · Today</span></div>
+
+        <div class="day-head">
+          <div class="day-num">24</div>
+          <div class="day-meta">
+            <span class="month">May · Sun</span>
+            周日 · 第 21 周
+          </div>
+        </div>
+
+        <div class="section-label">主题 <span class="hint">· 选 1–2 个</span></div>
+        <div class="chips">
+          <span class="chip selected">工作</span>
+          <span class="chip">玩</span>
+          <span class="chip">躺平</span>
+          <span class="chip">旅行</span>
+          <span class="chip">拍照</span>
+          <span class="chip">学习</span>
+          <span class="chip">社交</span>
+          <span class="chip">运动</span>
+          <span class="chip muted">+</span>
+        </div>
+
+        <div class="section-label">心情 <span class="hint">· 选 1 个</span></div>
+        <div class="chips">
+          <span class="chip">很开心</span>
+          <span class="chip selected">很透支</span>
+          <span class="chip">平平淡淡</span>
+          <span class="chip">沮丧</span>
+          <span class="chip">焦虑</span>
+          <span class="chip muted">+</span>
+        </div>
+
+        <div class="section-label">还想说的 <span class="ai-mark">AI 建议</span></div>
+        <div class="chips">
+          <span class="chip ai selected">有收获</span>
+          <span class="chip ai">赚到钱了</span>
+          <span class="chip ai">还需多学习</span>
+          <span class="chip ai">被会议淹没</span>
+          <span class="chip ai">想换个状态</span>
+        </div>
+
+        <div class="footer-cta">
+          <span class="save">已自动保存</span>
+          <span class="next">查看本周 →</span>
+        </div>
+      </div>
+
+      <div class="notes">
+        <ol>
+          <li><b>三层结构清晰分开</b>:主题(事实) / 心情(情绪) / 还想说的(反思)。前两层固定,可统计;第三层 AI 漂移,可惊喜。</li>
+          <li><b>AI 标签数 ≤ 5</b>。多了变成"挑题",违背低摩擦。</li>
+          <li><b>没有写文字的入口</b>(MVP)。如果以后加,放在最底"+",但永远是可选。</li>
+          <li><b>没有"完成"按钮</b>——选完即存,鼓励随手记。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== Screen 2: 日历页 ============== -->
+    <div class="frame-col">
+      <div class="frame-label">02 · Calendar</div>
+      <h2 class="frame-title">这个月长什么样</h2>
+
+      <div class="device">
+        <div class="status"><span>9:24</span><span>日历</span></div>
+
+        <div class="cal-head">
+          <div class="month-name">5月</div>
+          <div class="nav">‹ &nbsp; · &nbsp; ›</div>
+        </div>
+
+        <div class="weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+
+        <div class="grid">
+          <!-- Week 1 -->
+          <div class="cell faded"><span>27</span><span class="dot"></span></div>
+          <div class="cell faded"><span>28</span><span class="dot"></span></div>
+          <div class="cell faded"><span>29</span><span class="dot"></span></div>
+          <div class="cell faded"><span>30</span><span class="dot"></span></div>
+          <div class="cell"><span>1</span><span class="dot t-rest"></span></div>
+          <div class="cell"><span>2</span><span class="dot t-travel"></span></div>
+          <div class="cell"><span>3</span><span class="dot t-travel"></span></div>
+          <!-- Week 2 -->
+          <div class="cell"><span>4</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>5</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>6</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>7</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>8</span><span class="dot t-photo"></span></div>
+          <div class="cell"><span>9</span><span class="dot t-play"></span></div>
+          <div class="cell"><span>10</span><span class="dot t-rest"></span></div>
+          <!-- Week 3 -->
+          <div class="cell"><span>11</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>12</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>13</span><span class="dot t-learn"></span></div>
+          <div class="cell"><span>14</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>15</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>16</span><span class="dot t-play"></span></div>
+          <div class="cell"><span>17</span><span class="dot t-rest"></span></div>
+          <!-- Week 4 -->
+          <div class="cell"><span>18</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>19</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>20</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>21</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>22</span><span class="dot t-photo"></span></div>
+          <div class="cell"><span>23</span><span class="dot t-play"></span></div>
+          <div class="cell today"><span>24</span><span class="dot t-work"></span></div>
+          <!-- Week 5 -->
+          <div class="cell empty faded"><span>25</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>26</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>27</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>28</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>29</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>30</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>31</span><span class="dot"></span></div>
+        </div>
+
+        <div class="legend">
+          <span class="ll"><i class="dot t-work"></i> 工作</span>
+          <span class="ll"><i class="dot t-play"></i> 玩</span>
+          <span class="ll"><i class="dot t-rest"></i> 躺平</span>
+          <span class="ll"><i class="dot t-travel"></i> 旅行</span>
+          <span class="ll"><i class="dot t-photo"></i> 拍照</span>
+          <span class="ll"><i class="dot t-learn"></i> 学习</span>
+        </div>
+
+        <div class="preview">
+          <div class="pdate">5月23日 · 周六</div>
+          玩 · 很开心 · 难得放空
+        </div>
+      </div>
+
+      <div class="notes">
+        <ol>
+          <li><b>颜色 = 主标签</b>,不编码情绪。心情靠下面的预览区或单独的 heatmap 视图(可切换)。</li>
+          <li><b>一格一颜色,不堆叠</b>——一天最多两个主标签时,优先显示第一个;详细看 tap 进入。</li>
+          <li><b>未来日期留空虚线</b>,提示"还没发生",而不是冷冰冰的灰。</li>
+          <li><b>底部预览</b>:tap 任何一格,这里显示当天的标签摘要,无需跳页。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== Screen 3: 月报页 ============== -->
+    <div class="frame-col">
+      <div class="frame-label">03 · Monthly</div>
+      <h2 class="frame-title">这个月,你过成了什么样</h2>
+
+      <div class="device">
+        <div class="status"><span>9:24</span><span>月报 · 5月</span></div>
+
+        <div class="rep-head">
+          <div class="rep-month">May.</div>
+          <div class="rep-sub">2026 · 月度回顾</div>
+        </div>
+
+        <div class="narrative">
+          这个月你记录了 <b>23</b> 天。<br/>
+          其中 <b>13 天</b>是工作,<b>4 天</b>在玩,<br/>
+          <b>3 天</b>躺平,旅行了 <b>2 天</b>。<br/><br/>
+          <span class="accent">透支</span>出现了 <b>5 次</b>,几乎都在<br/>
+          周三、周四。
+        </div>
+
+        <div class="section-label">主题分布</div>
+        <div class="stat-row">
+          <div class="stat"><span class="name">工作</span><span class="bar"><i style="width: 86%"></i></span><span class="num">13</span></div>
+          <div class="stat"><span class="name">玩</span><span class="bar"><i style="width: 27%"></i></span><span class="num">4</span></div>
+          <div class="stat"><span class="name">躺平</span><span class="bar"><i style="width: 20%"></i></span><span class="num">3</span></div>
+          <div class="stat"><span class="name">旅行</span><span class="bar"><i style="width: 13%"></i></span><span class="num">2</span></div>
+          <div class="stat"><span class="name">拍照</span><span class="bar"><i style="width: 13%"></i></span><span class="num">2</span></div>
+        </div>
+
+        <div class="section-label">心情走势 <span class="hint">· 颜色越深越透支</span></div>
+        <div class="heat">
+          <div class="h l1"></div><div class="h l2"></div><div class="h l3"></div><div class="h l3"></div><div class="h l2"></div><div class="h l1"></div><div class="h"></div>
+          <div class="h l2"></div><div class="h l3"></div><div class="h l4"></div><div class="h l4"></div><div class="h l3"></div><div class="h l1"></div><div class="h l1"></div>
+          <div class="h l2"></div><div class="h l3"></div><div class="h l3"></div><div class="h l4"></div><div class="h l2"></div><div class="h l1"></div><div class="h"></div>
+          <div class="h l3"></div><div class="h l3"></div><div class="h l4"></div><div class="h l3"></div><div class="h l2"></div><div class="h"></div><div class="h"></div>
+        </div>
+        <div class="heat-label"><span>5月1日</span><span>5月24日</span></div>
+
+        <div class="observe" style="margin-top: 22px;">
+          <span class="tag">AI 观察</span>
+          连续三周,周三是你最累的一天;但每个周六都恢复得不错——下个月可以试试把高强度任务前移。
+        </div>
+
+        <div class="footer-cta" style="margin-top: 16px;">
+          <span class="save">导出 PDF</span>
+          <span class="next">看上个月 →</span>
+        </div>
+      </div>
+
+      <div class="notes">
+        <ol>
+          <li><b>叙事在最上面</b>,数字不是堆出来的,是带着上下文给的。"23 天"先于"13 天工作"。</li>
+          <li><b>主题分布是简单条形</b>,不是饼图。便于横向比较月与月。</li>
+          <li><b>心情 heatmap 用一个色相做明度</b>——不需要彩虹,因为它只表示一个变量(透支程度)。</li>
+          <li><b>AI 观察一段话即止</b>,不要罗列三条。要的是被看见的感觉,不是仪表盘。</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>主题 / Zhuti · Wireframes</span>
+    <span>下一步:走查 → 调整 → 决定 MVP 范围 → 真机原型</span>
+  </footer>
+</div>
+</body>
+</html>

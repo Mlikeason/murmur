@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Theme · Wireframes v5 · Imagist Poem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ececea;
+    --frame: #ffffff;
+    --ink: #0e0e10;
+    --ink-2: #5b5d60;
+    --ink-3: #a0a2a5;
+    --line: #e2e2df;
+    --line-soft: #ededeb;
+    --hair: #1a1a1c;
+    --accent: #2f4a3a;
+    --accent-soft: #e6ece7;
+
+    --t-work:   #2b3340;
+    --t-play:   #b88a2a;
+    --t-rest:   #a8a499;
+    --t-travel: #3f6e62;
+    --t-photo:  #b25c47;
+    --t-learn:  #5e4f7a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+    -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" on;
+  }
+  .page { max-width: 1420px; margin: 0 auto; padding: 56px 44px 96px; }
+
+  header.title {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 40px;
+  }
+  header.title h1 { font-weight: 500; font-size: 22px; letter-spacing: 0.3px; margin: 0; }
+  header.title h1 em {
+    font-style: normal; color: var(--ink-3); margin-left: 14px; font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 400;
+  }
+  header.title .meta { color: var(--ink-3); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .lede { color: var(--ink-2); font-size: 13.5px; line-height: 1.75; max-width: 760px; margin: -16px 0 32px; }
+  .lede b { color: var(--ink); font-weight: 500; }
+
+  .delta {
+    background: #fbfbfa; border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px; margin-bottom: 44px; font-size: 12.5px; line-height: 1.7; color: var(--ink-2);
+  }
+  .delta h3 { margin: 0 0 8px; font-size: 11px; font-weight: 500; color: var(--ink); letter-spacing: 1px; text-transform: uppercase; }
+  .delta b { color: var(--ink); font-weight: 500; }
+  .delta .row { display: grid; grid-template-columns: 110px 1fr; gap: 14px; margin-bottom: 4px; }
+  .delta .row .k { color: var(--ink-3); }
+
+  .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .frame-col { display: flex; flex-direction: column; }
+  .frame-label { font-size: 10.5px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .frame-title { font-size: 16px; font-weight: 500; margin: 0 0 22px; }
+
+  .device {
+    background: var(--frame); border: 1px solid var(--line); border-radius: 18px;
+    padding: 24px 20px 28px; display: flex; flex-direction: column;
+  }
+  .device.short { aspect-ratio: 9/19.5; }
+  .device.tall  { aspect-ratio: 9/26; }
+
+  .status {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.4px; margin-bottom: 18px;
+  }
+  .lang {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--ink-3); letter-spacing: 0.6px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 8px;
+    background: #fafafa;
+  }
+  .lang .on { color: var(--ink); font-weight: 500; }
+  .lang .sep { color: var(--line); }
+
+  .scope {
+    font-size: 10.5px; color: var(--ink-3); letter-spacing: 1.4px;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .scope-date { font-size: 13px; color: var(--ink-2); margin-bottom: 24px; }
+
+  /* ---- POEM TYPOGRAPHY ---- */
+  .poem {
+    font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", "Times New Roman", serif;
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 2;
+    letter-spacing: 0.2px;
+    white-space: pre-line;
+  }
+  .poem .title {
+    display: block; font-weight: 500; font-size: 1.15em; letter-spacing: 0.5px;
+    margin-bottom: 1em; color: var(--ink);
+  }
+  /* daily */
+  .poem.daily { font-size: 17px; text-align: left; padding: 24px 4px 32px; }
+  /* weekly */
+  .poem.weekly { font-size: 16px; text-align: left; padding: 18px 4px 28px; }
+  .poem.weekly.en { font-style: italic; }
+  /* monthly */
+  .poem.monthly { font-size: 15.5px; text-align: left; padding: 14px 4px 24px; line-height: 1.95; }
+  .poem .gap { display: block; height: 0.6em; }
+
+  .poem-meta {
+    border-top: 1px solid var(--line-soft);
+    padding-top: 12px; margin-top: auto;
+    font-size: 11px; color: var(--ink-3); letter-spacing: 0.2px; line-height: 1.7;
+  }
+  .poem-meta .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .poem-meta .based { color: var(--ink-2); }
+  .poem-meta .stamp { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--ink-3); margin-top: 6px; display: block; }
+
+  .mini-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .mini-chip {
+    font-size: 10.5px; padding: 3px 8px; border: 1px solid var(--line);
+    border-radius: 4px; color: var(--ink-2);
+  }
+  .mini-chip.dot::before {
+    content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 999px; margin-right: 6px; vertical-align: middle;
+    background: var(--ink-3);
+  }
+  .mini-chip.dot.work::before  { background: var(--t-work); }
+  .mini-chip.dot.play::before  { background: var(--t-play); }
+  .mini-chip.dot.photo::before { background: var(--t-photo); }
+  .mini-chip.dot.rest::before  { background: var(--t-rest); }
+
+  .quote-line {
+    font-size: 11.5px; color: var(--ink-2); line-height: 1.5;
+    border-left: 2px solid var(--line); padding-left: 8px; margin-top: 8px;
+    font-family: "Cormorant Garamond", "Noto Serif SC", serif; font-style: italic;
+  }
+
+  /* week mini strip */
+  .week-strip {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin: 10px 0 6px;
+  }
+  .week-strip .seg { height: 10px; border-radius: 2px; background: var(--line-soft); }
+  .week-strip .seg.t-work   { background: var(--t-work); }
+  .week-strip .seg.t-play   { background: var(--t-play); }
+  .week-strip .seg.t-photo  { background: var(--t-photo); }
+  .week-strip .seg.t-rest   { background: var(--t-rest); }
+  .week-strip-axis {
+    display: grid; grid-template-columns: repeat(7, 1fr); font-size: 9px; color: var(--ink-3);
+    text-align: center; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+
+  /* footer cta */
+  .footer-cta {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; margin-top: 14px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 11.5px; color: var(--ink-2);
+  }
+  .footer-cta .share {
+    color: var(--ink); font-weight: 500;
+    border: 1px solid var(--line); padding: 5px 10px; border-radius: 4px;
+  }
+  .footer-cta .next { color: var(--ink-2); }
+
+  /* ---- MONTHLY: data section ---- */
+  .divider-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 9.5px; color: var(--ink-3); letter-spacing: 1.6px; text-transform: uppercase;
+    margin: 18px 0 14px;
+  }
+  .divider-label::before, .divider-label::after {
+    content: ""; flex: 1; height: 1px; background: var(--line-soft);
+  }
+
+  .stat-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 18px; }
+  .tile {
+    border: 1px solid var(--line); border-radius: 5px; padding: 10px 10px 11px;
+    display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 1/1;
+  }
+  .tile .big { font-size: 26px; font-weight: 300; line-height: 0.9; letter-spacing: -1px; }
+  .tile .big .denom { font-size: 12px; color: var(--ink-3); font-weight: 400; }
+  .tile .big .x { font-size: 16px; color: var(--ink-3); }
+  .tile .lbl { font-size: 9px; color: var(--ink-3); letter-spacing: 1px; text-transform: uppercase; line-height: 1.3; }
+  .tile.accent .big { color: var(--accent); }
+
+  .strip-label { font-size: 9.5px; color: var(--ink-3); letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 8px; }
+  .strip { display: grid; grid-template-columns: repeat(31, 1fr); gap: 2px; height: 28px; margin-bottom: 5px; }
+  .strip .seg { background: var(--line-soft); border-radius: 1px; }
+  .strip .seg.missed { background: transparent; border-bottom: 1px solid var(--line); height: 2px; align-self: end; border-radius: 0; }
+  .strip .seg.future { background: transparent; border-bottom: 1px dashed var(--line); height: 2px; align-self: end; border-radius: 0; }
+  .strip .seg.today-mark { position: relative; }
+  .strip .seg.today-mark::after {
+    content: ""; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+    width: 3px; height: 3px; border-radius: 999px; background: var(--ink);
+  }
+  .strip-axis { display: flex; justify-content: space-between; font-size: 9px; color: var(--ink-3); letter-spacing: 0.4px; }
+  .strip-cap { font-size: 11px; color: var(--ink-2); line-height: 1.55; margin: 10px 0 18px; }
+  .strip-cap b { color: var(--ink); font-weight: 500; }
+
+  .stat-row { display: flex; flex-direction: column; gap: 6px; }
+  .stat { display: grid; grid-template-columns: 46px 1fr 26px; align-items: center; gap: 10px; font-size: 11px; }
+  .stat .name { color: var(--ink-2); }
+  .stat .bar { height: 4px; background: var(--line-soft); border-radius: 999px; overflow: hidden; }
+  .stat .bar i { display: block; height: 100%; border-radius: 999px; }
+  .stat .num { text-align: right; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  .heat { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 5px; }
+  .heat .h { aspect-ratio: 1/1; border-radius: 2px; background: #ececea; }
+  .heat .h.g1 { background: #c8d6c4; }
+  .heat .h.g2 { background: #82a085; }
+  .heat .h.g3 { background: #2f4a3a; }
+  .heat .h.n  { background: #ddddd8; }
+  .heat .h.r1 { background: #e7c6bd; }
+  .heat .h.r2 { background: #b87765; }
+  .heat .h.r3 { background: #7a3324; }
+  .heat-label { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.5px; }
+  .heat-key { display: flex; align-items: center; gap: 6px; font-size: 9.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: 0.4px; }
+  .heat-key .swatch { width: 8px; height: 8px; border-radius: 2px; display: inline-block; background: #ececea; }
+  .heat-key .swatch.g1 { background: #c8d6c4; }
+  .heat-key .swatch.g2 { background: #82a085; }
+  .heat-key .swatch.g3 { background: #2f4a3a; }
+  .heat-key .swatch.n  { background: #ddddd8; }
+  .heat-key .swatch.r1 { background: #e7c6bd; }
+  .heat-key .swatch.r2 { background: #b87765; }
+  .heat-key .swatch.r3 { background: #7a3324; }
+  .heat-key .scale { display: inline-flex; gap: 2px; }
+
+  .observe {
+    background: #f6f6f4; border: 1px solid var(--line-soft); border-radius: 4px;
+    padding: 13px 13px 12px; font-size: 11.5px; line-height: 1.65; color: var(--ink); margin-top: 14px;
+  }
+  .observe .tag { font-size: 9px; color: var(--accent); letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 5px; }
+
+  /* notes */
+  .notes { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 12px; line-height: 1.75; color: var(--ink-2); }
+  .notes ol { margin: 0; padding-left: 16px; }
+  .notes li { margin-bottom: 5px; }
+  .notes b { color: var(--ink); font-weight: 500; }
+
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 11px; display: flex; justify-content: space-between; letter-spacing: 0.4px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="title">
+    <h1>Theme · 主题 <em>Wireframes · v5 · imagist poem</em></h1>
+    <div class="meta">2026.05.24 · imagist · not narrative</div>
+  </header>
+
+  <p class="lede" lang="zh">
+    v5 改变 AI 写诗的方式。
+    原则:<b>AI 不写关于你的散文,AI 用你的词写诗</b>——
+    把你记录过的名词与动词当成<b>诗的词料</b>,组合成有意境的画面;
+    <b>不用第三方/上帝视角做总结</b>,不复述「你大半时间在工作」,不点评「周三总是最累」。
+    标题<b>由 AI 自己起</b>,从意象中长出来,而不是日期。
+  </p>
+
+  <div class="delta" lang="zh">
+    <h3>v4 → v5 变更</h3>
+    <div class="row"><span class="k">写法</span><span>从「<b>叙事性 AI 散文</b>」改为「<b>意象派 found poem</b>」。AI 的角色从「为你写一段总结」变成「用你的词搭一幅画」</span></div>
+    <div class="row"><span class="k">视角</span><span>取消第二/第三人称的总结句(「你大半时间在...」「周三总是...」)。诗里能不出现人称就不出现</span></div>
+    <div class="row"><span class="k">词料</span><span>诗的实词(名词/动词)主要从<b>用户的标签 + 一句话</b>里抽取。AI 只补连接组织,不引入新主题</span></div>
+    <div class="row"><span class="k">标题</span><span>不再用日期(「五月」「This week」)。AI <b>从意象中提取一个词或短语</b>当标题——通常来自最强的具象意象</span></div>
+    <div class="row"><span class="k">结构</span><span>更多断句、更多停顿、更多留白。重复也可以当节奏(「工作。/ 工作。/ 工作。」)</span></div>
+    <div class="row"><span class="k">AI 旁注</span><span>暂时保留(月报底部)。它和诗分工:诗是镜,旁注是建议。如果觉得仍多余可以再砍</span></div>
+  </div>
+
+  <div class="frames">
+
+    <!-- ============== 04a · Daily Poem (中) ============== -->
+    <div class="frame-col">
+      <div class="frame-label">04a · Daily</div>
+      <h2 class="frame-title" lang="zh">日诗 · 清晨打开,看见昨天</h2>
+
+      <div class="device short">
+        <div class="status">
+          <span>8:14</span>
+          <span class="lang"><span>EN</span><span class="sep">·</span><span class="on">中</span></span>
+        </div>
+
+        <div class="scope">昨日</div>
+        <div class="scope-date">5月23日 · 周六</div>
+
+        <div class="poem daily" lang="zh"><span class="title">凉</span>手机扣下
+咖啡凉了
+
+邻桌的笑
+很认真</div>
+
+        <div class="poem-meta">
+          <div class="row">
+            <span class="based">词料</span>
+          </div>
+          <div class="mini-chips">
+            <span class="mini-chip dot play">玩</span>
+            <span class="mini-chip">开心</span>
+            <span class="mini-chip">难得放空</span>
+          </div>
+          <div class="quote-line" lang="zh">「在乌节路坐了两个小时,听见邻桌一直在笑」</div>
+          <span class="stamp">清晨 8:00 生成 · 标题由 AI 起</span>
+        </div>
+
+        <div class="footer-cta">
+          <span class="share">保存为图片</span>
+          <span class="next">明日 →</span>
+        </div>
+      </div>
+
+      <div class="notes" lang="zh">
+        <ol>
+          <li><b>诗里没有「我」也没有「你」</b>——只有手机、咖啡、邻桌的笑。三个具象、零叙事。</li>
+          <li><b>标题「凉」</b>是 AI 起的。它不是「五月廿三」也不是「放空的一天」——是从「咖啡凉了」里抽出一个字,变成整首诗的呼吸。</li>
+          <li><b>「词料」</b> 比 v4 的「来自」更准——告诉用户:这些标签和那句话,被当成<b>诗的材料</b>用了,而不是被复述了一遍。</li>
+          <li><b>「+ 一句话」内容增长</b>——「邻桌一直在笑」是 AI 选中的细节,变成了诗的第二段。再次证明:用户喂的具象细节,直接决定诗的好坏。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== 04b · Weekly Poem (EN) ============== -->
+    <div class="frame-col">
+      <div class="frame-label">04b · Weekly</div>
+      <h2 class="frame-title" lang="zh">周诗 · 周一打开,回看上周</h2>
+
+      <div class="device short">
+        <div class="status">
+          <span>8:14</span>
+          <span class="lang"><span class="on">EN</span><span class="sep">·</span><span>中</span></span>
+        </div>
+
+        <div class="scope">Last week</div>
+        <div class="scope-date">May 18 – 24</div>
+
+        <div class="poem weekly en"><span class="title">Silent</span>Keyboard. Keyboard.
+Keyboard. Keyboard.
+
+Then — a cat
+from a wall.
+
+The photograph.
+The day off.
+The keyboard, again.</div>
+
+        <div class="poem-meta">
+          <div class="based" style="margin-bottom: 8px;">word source</div>
+          <div class="week-strip">
+            <span class="seg t-work"></span>
+            <span class="seg t-work"></span>
+            <span class="seg t-work"></span>
+            <span class="seg t-work"></span>
+            <span class="seg t-photo"></span>
+            <span class="seg t-play"></span>
+            <span class="seg t-work"></span>
+          </div>
+          <div class="week-strip-axis">
+            <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; color: var(--ink-2); line-height: 1.55;">
+            <b style="color: var(--ink); font-weight: 500;">4×</b> work · <b style="color: var(--ink); font-weight: 500;">2×</b> drained · <b style="color: var(--ink); font-weight: 500;">1×</b> photo
+          </div>
+          <span class="stamp">monday 8:00 · ai title</span>
+        </div>
+
+        <div class="footer-cta">
+          <span class="share">Share as card</span>
+          <span class="next">Next week →</span>
+        </div>
+      </div>
+
+      <div class="notes" lang="zh">
+        <ol>
+          <li><b>「Keyboard. Keyboard. Keyboard. Keyboard.」</b>——四下重复就是「这周工作了四天」。没用 "I worked four days",但意思全在。这是意象派的关键手法:<b>重复 = 节奏 = 数据</b>。</li>
+          <li><b>标题「Silent」</b>是 AI 从「a cat dropped from a wall — silent」里挑出的一个词。它不是「这周」也不是「May 18–24」——是一个有声音的意象。</li>
+          <li><b>"The photograph. The day off. The keyboard, again."</b> 三句对应三种主题(Photo / Play / Work),但没有命名它们。读者自己拼出节奏。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== 04c · Monthly Poem (中) — POEM + DATA EVIDENCE ============== -->
+    <div class="frame-col">
+      <div class="frame-label">04c · Monthly</div>
+      <h2 class="frame-title" lang="zh">月诗 · 月初打开,这是上个月的你</h2>
+
+      <div class="device tall">
+        <div class="status">
+          <span>8:14</span>
+          <span class="lang"><span>EN</span><span class="sep">·</span><span class="on">中</span></span>
+        </div>
+
+        <div class="scope">上个月</div>
+        <div class="scope-date">2026年5月</div>
+
+        <div class="poem monthly" lang="zh"><span class="title">口袋里的风</span>工作。
+工作。
+工作。
+
+然后,月初
+午后的一只猫。
+拍下来。
+后来翻开过几次。
+
+海边几次。
+最后一次回来,
+风留在外套口袋。
+
+办公室的灯
+亮到很晚。
+桌上的咖啡
+没人喝。
+
+五月就是这样:
+有风
+有灯
+有一只猫。</div>
+
+        <div class="divider-label">数据印证</div>
+
+        <div class="stat-tiles">
+          <div class="tile">
+            <div class="big">23<span class="denom"> / 31</span></div>
+            <div class="lbl">记录<br/>天数</div>
+          </div>
+          <div class="tile">
+            <div class="big" style="font-size: 22px;">工作</div>
+            <div class="lbl">主要<br/>主题</div>
+          </div>
+          <div class="tile accent">
+            <div class="big">5<span class="x">×</span></div>
+            <div class="lbl">透支<br/>本月</div>
+          </div>
+        </div>
+
+        <div class="strip-label">月之形</div>
+        <div class="strip">
+          <div class="seg t-rest"></div>
+          <div class="seg t-travel"></div>
+          <div class="seg t-travel"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-photo"></div>
+          <div class="seg t-play"></div>
+          <div class="seg t-rest"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-learn"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-play"></div>
+          <div class="seg t-rest"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg t-work"></div>
+          <div class="seg missed"></div>
+          <div class="seg t-photo"></div>
+          <div class="seg t-play"></div>
+          <div class="seg t-work today-mark"></div>
+          <div class="seg future"></div>
+          <div class="seg future"></div>
+          <div class="seg future"></div>
+          <div class="seg future"></div>
+          <div class="seg future"></div>
+          <div class="seg future"></div>
+          <div class="seg future"></div>
+        </div>
+        <div class="strip-axis"><span>1</span><span>10</span><span>20</span><span>31</span></div>
+
+        <div class="strip-cap">
+          <b>13</b> 工作 · <b>4</b> 玩 · <b>3</b> 躺平 · <b>2</b> 旅行 · <b>2</b> 拍照 · <b>1</b> 学习
+        </div>
+
+        <div class="strip-label">主题</div>
+        <div class="stat-row">
+          <div class="stat"><span class="name">工作</span><span class="bar"><i style="width: 86%; background: var(--t-work);"></i></span><span class="num">13</span></div>
+          <div class="stat"><span class="name">玩</span><span class="bar"><i style="width: 27%; background: var(--t-play);"></i></span><span class="num">4</span></div>
+          <div class="stat"><span class="name">躺平</span><span class="bar"><i style="width: 20%; background: var(--t-rest);"></i></span><span class="num">3</span></div>
+          <div class="stat"><span class="name">旅行</span><span class="bar"><i style="width: 13%; background: var(--t-travel);"></i></span><span class="num">2</span></div>
+          <div class="stat"><span class="name">拍照</span><span class="bar"><i style="width: 13%; background: var(--t-photo);"></i></span><span class="num">2</span></div>
+        </div>
+
+        <div class="strip-label" style="margin-top: 18px;">心情</div>
+        <div class="heat">
+          <div class="h g1"></div><div class="h g2"></div><div class="h r1"></div><div class="h r2"></div><div class="h n"></div><div class="h g3"></div><div class="h"></div>
+          <div class="h n"></div><div class="h r1"></div><div class="h r3"></div><div class="h r3"></div><div class="h r1"></div><div class="h g2"></div><div class="h g1"></div>
+          <div class="h n"></div><div class="h r1"></div><div class="h r2"></div><div class="h r3"></div><div class="h n"></div><div class="h g2"></div><div class="h"></div>
+          <div class="h r2"></div><div class="h r2"></div><div class="h r3"></div><div class="h r2"></div><div class="h n"></div><div class="h g3"></div><div class="h r2"></div>
+        </div>
+        <div class="heat-label"><span>5月1日</span><span>5月24日</span></div>
+        <div class="heat-key">
+          <span>透支</span>
+          <span class="scale">
+            <i class="swatch r3"></i><i class="swatch r2"></i><i class="swatch r1"></i><i class="swatch n"></i><i class="swatch g1"></i><i class="swatch g2"></i><i class="swatch g3"></i>
+          </span>
+          <span>开心</span>
+        </div>
+
+        <div class="observe">
+          <span class="tag">AI 旁注</span>
+          连续三周,周三是你最累的一天;但每个周六都能恢复——下个月可以试试把高强度任务前移。
+        </div>
+
+        <div class="footer-cta">
+          <span class="share">保存月诗为图片</span>
+          <span class="next">六月 →</span>
+        </div>
+      </div>
+
+      <div class="notes" lang="zh">
+        <ol>
+          <li><b>标题「口袋里的风」由 AI 起</b>。它不是「五月」,也不是「May 2026」——它是从用户那句「最后一次回来时带着风的味道」里抽出的意象。<b>标题本身就是一个画面</b>。</li>
+          <li><b>对比 v4 的月诗</b>:v4 说「你大半时间在工作 / 也大半时间在透支」;v5 直接写「工作。/ 工作。/ 工作。」——同样的事实,前者是评语,后者是节奏。</li>
+          <li><b>不出现「你」</b>。整首诗里没有第二人称,也没有「这个月」「下个月」这种总结词。读起来像一段被旁人无意瞥见的画面。</li>
+          <li><b>所有意象都有数据根</b>:猫 ← 拍照标签;海边 ← 旅行标签 + 一句话;办公室的灯 ← 一句话(假设有);咖啡 ← 反复出现的细节。诗和下方数据是<b>同一组事实的两种说法</b>。</li>
+          <li><b>结尾三行「有风 / 有灯 / 有一只猫」</b>是 list,但不是统计。三个意象代替了「这个月你的生活有这些」——意境替代了总结。</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Theme / 主题 · Wireframes v5 · imagist</span>
+    <span lang="zh">v1 / v2 / v3 / v4 在同目录下,v4 是叙事版可对照</span>
+  </footer>
+</div>
+</body>
+</html>

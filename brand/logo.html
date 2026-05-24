@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>碎碎念 · Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#ececea; --ink:#0e0e10; --ink-2:#5b5d60; --ink-3:#a0a2a5; --line:#e2e2df; --accent:#2f4a3a; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter","PingFang SC",sans-serif;-webkit-font-smoothing:antialiased}
+  .page{max-width:1200px;margin:0 auto;padding:64px 44px 96px}
+  header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:36px}
+  h1{font-weight:500;font-size:22px;margin:0;letter-spacing:0.3px}
+  h1 em{font-style:normal;color:var(--ink-3);margin-left:14px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:400}
+  .meta{color:var(--ink-3);font-size:11px;letter-spacing:1px;text-transform:uppercase}
+  .lede{color:var(--ink-2);font-size:14px;line-height:1.75;max-width:680px;margin:-12px 0 40px}
+  .lede b{color:var(--ink);font-weight:500}
+
+  .section{margin-bottom:56px}
+  .section h2{font-size:11px;color:var(--ink-3);letter-spacing:1.8px;text-transform:uppercase;font-weight:500;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+
+  .row{display:grid;gap:24px;margin-bottom:24px}
+  .row.r2{grid-template-columns:repeat(2,1fr)}
+  .row.r3{grid-template-columns:repeat(3,1fr)}
+  .row.r4{grid-template-columns:repeat(4,1fr)}
+
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:48px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;position:relative}
+  .panel.dark{background:#0e0e10;color:#efece4}
+  .panel.warm{background:#f4f2ec}
+  .panel .label{position:absolute;top:14px;left:16px;font-size:10px;letter-spacing:1px;color:var(--ink-3);text-transform:uppercase}
+  .panel.dark .label{color:#6b6960}
+
+  /* Logo mark — three dots */
+  .mark{display:inline-flex;gap:9px;align-items:center}
+  .mark .d{width:11px;height:11px;border-radius:999px;background:currentColor}
+  .mark.lg{gap:22px}
+  .mark.lg .d{width:26px;height:26px}
+  .mark.xl{gap:36px}
+  .mark.xl .d{width:42px;height:42px}
+  .mark.sm{gap:5px}
+  .mark.sm .d{width:5px;height:5px}
+  .mark.xs{gap:3px}
+  .mark.xs .d{width:3px;height:3px}
+
+  /* Wordmark */
+  .wordmark{font-family:"PingFang SC","Inter",sans-serif;font-weight:500;letter-spacing:6px;color:currentColor}
+  .wordmark.xl{font-size:48px;letter-spacing:14px}
+  .wordmark.lg{font-size:32px;letter-spacing:10px}
+  .wordmark.md{font-size:20px;letter-spacing:5px}
+  .wordmark.sm{font-size:14px;letter-spacing:2px}
+
+  .sub{font-family:"Inter",sans-serif;font-weight:400;letter-spacing:5px;text-transform:lowercase;color:var(--ink-3);font-size:13px}
+  .panel.dark .sub{color:#6b6960}
+
+  /* Lockup variations */
+  .lockup{display:flex;align-items:center;gap:24px}
+  .lockup.vert{flex-direction:column;gap:14px}
+  .lockup.vert .sub{margin-top:6px}
+
+  /* Application examples */
+  .app-mock{background:#fff;border-radius:10px;border:1px solid var(--line);padding:0;overflow:hidden;aspect-ratio:9/6}
+  .app-mock .top{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .app-mock .top .brand{display:inline-flex;align-items:center;gap:8px;font-weight:500;font-size:13px;letter-spacing:1px}
+  .app-mock .top .brand em{font-style:normal;color:var(--ink-3);font-size:11px;font-weight:400;margin-left:4px;letter-spacing:0.5px}
+  .app-mock .top .right{color:var(--ink-3);font-size:11px}
+  .app-mock .body{padding:18px;color:var(--ink-3);font-size:11px;letter-spacing:0.5px;text-transform:uppercase}
+
+  .favicon-frame{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px;display:inline-flex;align-items:center;gap:10px;font-size:11px;color:var(--ink-3)}
+  .favicon-frame .browser-tab{background:#f5f5f5;border-radius:4px 4px 0 0;padding:6px 10px;font-size:11px;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+
+  .share-mock{aspect-ratio:4/5;background:#fff;border:1px solid var(--line);border-radius:8px;padding:32px 28px;display:flex;flex-direction:column;font-family:"Cormorant Garamond","Noto Serif SC",serif;color:var(--ink)}
+  .share-mock .poem{margin:auto 0;font-size:17px;line-height:2}
+  .share-mock .poem .t{display:block;font-weight:500;font-size:1.3em;margin-bottom:0.9em;letter-spacing:0.4px}
+  .share-mock .foot{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink-3);font-family:"Inter",sans-serif}
+  .share-mock .foot .brand{display:inline-flex;align-items:center;gap:6px;color:var(--ink);font-weight:500;text-transform:none;letter-spacing:0.4px;font-size:11px}
+
+  .principle{font-family:"Noto Serif SC","Cormorant Garamond",serif;font-size:18px;line-height:1.9;color:var(--ink);padding:24px 28px;background:#fbfbfa;border-left:3px solid var(--accent);border-radius:0 4px 4px 0;max-width:680px}
+  .principle p{margin:0 0 12px}
+  .principle p:last-child{margin-bottom:0}
+  .principle b{font-weight:500}
+
+  .small-note{margin-top:14px;font-size:12px;color:var(--ink-2);line-height:1.7;max-width:680px}
+  .small-note b{color:var(--ink);font-weight:500}
+
+  footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-3);font-size:11px;letter-spacing:0.4px}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>碎碎念 <em>Brand · Logo</em></h1>
+    <div class="meta">2026.05.24 · v1</div>
+  </header>
+
+  <p class="lede">
+    <b>三个点。</b>
+    碎碎念是从嘴里碎成片段的话。三个点既是 <b>ellipsis</b>(欲言又止),也是 <b>fragmentation</b>(碎成几粒),
+    又恰好对应「碎/碎/念」三字。
+    它是这个 app 在世界上的<b>最小符号</b>——能做 favicon、能做 watermark、能放在 header,在任何尺寸都不塌。
+  </p>
+
+  <div class="principle">
+    <p>· · ·</p>
+    <p>碎念。</p>
+    <p>诗。</p>
+  </div>
+
+  <!-- ============== MARK ONLY ============== -->
+  <div class="section" style="margin-top: 48px;">
+    <h2>01 · Mark only</h2>
+    <div class="row r3">
+      <div class="panel"><span class="label">light</span><span class="mark xl"><i class="d"></i><i class="d"></i><i class="d"></i></span></div>
+      <div class="panel dark"><span class="label">dark</span><span class="mark xl"><i class="d"></i><i class="d"></i><i class="d"></i></span></div>
+      <div class="panel warm"><span class="label">warm</span><span class="mark xl"><i class="d"></i><i class="d"></i><i class="d"></i></span></div>
+    </div>
+    <div class="small-note">
+      <b>规格</b>:三个等径正圆,等间距。圆径 = 间距的 <b>0.55</b>。完美对称,无修饰。
+      在任何背景上都用 <b>currentColor</b> 渲染,不指定固定色——它跟随上下文走。
+    </div>
+  </div>
+
+  <!-- ============== SCALES ============== -->
+  <div class="section">
+    <h2>02 · Scales</h2>
+    <div class="panel" style="padding: 48px 32px;">
+      <div style="display: flex; align-items: center; gap: 52px; flex-wrap: wrap; justify-content: center;">
+        <span class="mark xl"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+        <span class="mark lg"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+        <span class="mark"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+        <span class="mark sm"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+        <span class="mark xs"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+      </div>
+    </div>
+    <div class="small-note">从 favicon(<b>16px</b>)到 hero(<b>200px+</b>),mark 保持完整可读。这是它优于任何具象图形的关键。</div>
+  </div>
+
+  <!-- ============== LOCKUPS ============== -->
+  <div class="section">
+    <h2>03 · Lockups</h2>
+    <div class="row r2">
+      <div class="panel">
+        <span class="label">horizontal · primary</span>
+        <div class="lockup">
+          <span class="mark lg"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+          <div>
+            <div class="wordmark lg">碎碎念</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <span class="label">horizontal · with subtitle</span>
+        <div class="lockup">
+          <span class="mark lg"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+          <div>
+            <div class="wordmark md">碎碎念</div>
+            <div class="sub" style="margin-top: 5px;">murmur</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row r2">
+      <div class="panel">
+        <span class="label">vertical · centered</span>
+        <div class="lockup vert">
+          <span class="mark lg"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+          <div class="wordmark lg">碎碎念</div>
+          <div class="sub">murmur</div>
+        </div>
+      </div>
+      <div class="panel dark">
+        <span class="label">dark · vertical</span>
+        <div class="lockup vert">
+          <span class="mark lg"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+          <div class="wordmark lg" style="color: #efece4;">碎碎念</div>
+          <div class="sub">murmur</div>
+        </div>
+      </div>
+    </div>
+    <div class="small-note">
+      Wordmark 用 <b>PingFang SC Medium</b>,字距 <b>6–14px</b>(随尺寸放大)。
+      副标题 "murmur" 用 <b>Inter Regular</b>,小写,字距 <b>5px</b>——克制不喧宾夺主。
+    </div>
+  </div>
+
+  <!-- ============== APPLICATIONS ============== -->
+  <div class="section">
+    <h2>04 · In context</h2>
+    <div class="row r2">
+      <div>
+        <div class="app-mock">
+          <div class="top">
+            <span class="brand">
+              <span class="mark sm" style="margin-right: 4px;"><i class="d"></i><i class="d"></i><i class="d"></i></span>
+              碎碎念 <em>Murmur</em>
+            </span>
+            <span class="right">EN · 中  ⚙</span>
+          </div>
+          <div class="body">— app header —</div>
+        </div>
+        <div class="small-note">App 顶栏:mark + 中文 wordmark + 灰色「Murmur」副标。</div>
+      </div>
+      <div>
+        <div class="favicon-frame" style="background: #f5f5f5; border-radius: 4px 4px 0 0; padding: 0;">
+          <div class="browser-tab">
+            <span class="mark xs"><i class="d" style="background: #0e0e10;"></i><i class="d" style="background: #0e0e10;"></i><i class="d" style="background: #0e0e10;"></i></span>
+            碎碎念
+          </div>
+          <div class="browser-tab" style="background:#eaeaea;">
+            <span style="color: #999;">×</span>
+          </div>
+        </div>
+        <div class="small-note">浏览器 tab favicon:三个 3px 黑点,在 16×16 像素里仍然清晰可辨。</div>
+      </div>
+    </div>
+
+    <div class="row r3" style="margin-top: 28px;">
+      <div class="share-mock">
+        <div class="poem"><span class="t">凉</span>手机扣下
+咖啡凉了
+
+邻桌的笑
+很认真</div>
+        <div class="foot">
+          <span>May 23, 2026</span>
+          <span class="brand"><span class="mark xs" style="margin-right: 4px;"><i class="d" style="background: #0e0e10;"></i><i class="d" style="background: #0e0e10;"></i><i class="d" style="background: #0e0e10;"></i></span>碎碎念</span>
+        </div>
+      </div>
+      <div class="share-mock" style="background: #0e0e10; color: #efece4;">
+        <div class="poem"><span class="t">Cold</span>Phone, face-down.
+The coffee, cold.
+
+The laughter
+from the next table —
+how sincere.</div>
+        <div class="foot" style="color: #6b6960;">
+          <span>May 23, 2026</span>
+          <span class="brand" style="color: #efece4;"><span class="mark xs" style="margin-right: 4px;"><i class="d" style="background: #efece4;"></i><i class="d" style="background: #efece4;"></i><i class="d" style="background: #efece4;"></i></span>碎碎念</span>
+        </div>
+      </div>
+      <div class="share-mock" style="background: #e9efe5;">
+        <div class="poem"><span class="t">凉</span>手机扣下
+咖啡凉了
+
+邻桌的笑
+很认真</div>
+        <div class="foot" style="color: rgba(26,34,28,0.55);">
+          <span>May 23, 2026 · 玩</span>
+          <span class="brand" style="color: #1a221c;"><span class="mark xs" style="margin-right: 4px;"><i class="d" style="background: #1a221c;"></i><i class="d" style="background: #1a221c;"></i><i class="d" style="background: #1a221c;"></i></span>碎碎念</span>
+        </div>
+      </div>
+    </div>
+    <div class="small-note">分享卡的水印:mark + 「碎碎念」中文 wordmark。<b>不带「Murmur」副标</b>——分享卡里要的是中文气场。</div>
+  </div>
+
+  <footer>碎碎念 · Brand · v1 · The three dots</footer>
+</div>
+</body>
+</html>

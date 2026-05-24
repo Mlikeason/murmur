@@ -1,0 +1,1673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+<title>碎碎念 · Murmur</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='6' cy='16' r='3' fill='%230e0e10'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%230e0e10'/%3E%3Ccircle cx='26' cy='16' r='3' fill='%230e0e10'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --bg: #ececea;
+    --frame: #ffffff;
+    --ink: #0e0e10;
+    --ink-2: #5b5d60;
+    --ink-3: #a0a2a5;
+    --line: #e2e2df;
+    --line-soft: #ededeb;
+    --accent: #2f4a3a;
+    --accent-soft: #e6ece7;
+    --t-work:   #2b3340;
+    --t-play:   #b88a2a;
+    --t-rest:   #a8a499;
+    --t-travel: #3f6e62;
+    --t-photo:  #b25c47;
+    --t-learn:  #5e4f7a;
+    --t-social: #a25f7c;
+    --t-sport:  #3f6a8a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+    -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" on;
+    overscroll-behavior: none;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; color: inherit; }
+  input, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+
+  .app {
+    max-width: 480px; margin: 0 auto; min-height: 100vh;
+    background: var(--frame); display: flex; flex-direction: column;
+    position: relative; box-shadow: 0 0 0 1px var(--line);
+  }
+  @media (min-width: 600px) {
+    .app { margin-top: 24px; margin-bottom: 24px; min-height: calc(100vh - 48px); border-radius: 18px; overflow: hidden; }
+  }
+
+  /* HEADER */
+  .app-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px 12px; gap: 12px;
+  }
+  .brand { font-weight: 500; font-size: 13px; letter-spacing: 1px; color: var(--ink); display: inline-flex; align-items: center; gap: 9px; }
+  .brand em { font-style: normal; color: var(--ink-3); font-weight: 400; margin-left: 4px; font-size: 11px; letter-spacing: 0.5px; }
+  .logo-mark { display: inline-flex; gap: 5px; align-items: center; }
+  .logo-mark i { width: 5px; height: 5px; border-radius: 999px; background: currentColor; display: inline-block; }
+  .scm-mark { display: inline-flex; gap: 3px; align-items: center; margin-right: 6px; vertical-align: middle; }
+  .scm-mark i { width: 3px; height: 3px; border-radius: 999px; background: currentColor; display: inline-block; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .lang {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--ink-3); letter-spacing: 0.6px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 4px 9px;
+    background: #fafafa; line-height: 1;
+  }
+  .lang .on { color: var(--ink); font-weight: 500; }
+  .lang .sep { color: var(--line); }
+  .lang:hover { border-color: var(--ink-3); }
+  .icon-btn {
+    width: 30px; height: 30px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink-3); font-size: 16px;
+  }
+  .icon-btn:hover { background: var(--line-soft); color: var(--ink); }
+
+  /* MAIN */
+  .app-main { flex: 1; padding: 8px 22px 92px; overflow-y: auto; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ============ TODAY VIEW ============ */
+  .day-head { display: flex; align-items: flex-end; justify-content: space-between; margin: 6px 0 28px; }
+  .day-num { font-size: 76px; line-height: 0.85; font-weight: 200; letter-spacing: -3px; color: var(--ink); }
+  .day-meta { text-align: right; font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+  .day-meta .month { display: block; color: var(--ink-3); font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 4px; }
+
+  .section-label {
+    font-size: 11.5px; color: var(--ink-2); margin: 22px 0 12px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+  .section-label .hint { color: var(--ink-3); font-size: 10.5px; }
+  .section-label .ai-mark {
+    font-size: 9.5px; color: var(--accent); border: 1px solid var(--accent-soft);
+    padding: 3px 7px; border-radius: 999px; letter-spacing: 0.8px; text-transform: uppercase;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 13.5px; padding: 8px 13px; border: 1px solid var(--line);
+    border-radius: 7px; color: var(--ink); background: transparent; line-height: 1;
+    transition: all 0.12s ease; user-select: none;
+  }
+  .chip:hover { border-color: var(--ink-3); }
+  .chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip.muted { color: var(--ink-3); border-style: dashed; }
+  .chip.sub { border-style: dashed; border-color: #d6d6d3; color: var(--ink-2); }
+  .chip.sub.selected { background: var(--accent); border-color: var(--accent); color: #fff; border-style: solid; }
+
+  .one-line-wrap { margin-top: 18px; }
+  .one-line {
+    width: 100%; padding: 12px 14px; border: 1px dashed var(--line);
+    border-radius: 7px; font-size: 13px; color: var(--ink); background: transparent;
+    outline: none; min-height: 42px; resize: vertical; line-height: 1.5;
+  }
+  .one-line::placeholder { color: var(--ink-3); }
+  .one-line:focus { border-color: var(--ink-3); border-style: solid; background: #fbfbfa; }
+  .one-line-hint { font-size: 11px; color: var(--ink-3); margin-top: 6px; line-height: 1.5; }
+
+  .refresh-btn {
+    font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.3px;
+    padding: 4px 8px; border-radius: 4px; border: 1px solid transparent;
+    display: inline-flex; align-items: center; gap: 2px;
+  }
+  .refresh-btn:hover { color: var(--ink); border-color: var(--line); background: #fbfbfa; }
+  .refresh-btn:active { transform: scale(0.97); }
+
+  .save-btn {
+    margin-top: 32px; width: 100%; padding: 15px;
+    background: var(--ink); color: #fff; border-radius: 8px;
+    font-size: 13.5px; letter-spacing: 0.6px; font-weight: 500;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .save-btn:hover { background: #000; }
+  .save-btn:active { transform: scale(0.99); }
+  .save-btn.done { background: var(--accent); }
+  .save-btn.done:hover { background: var(--accent); }
+
+  /* ============ CALENDAR VIEW ============ */
+  .cal-head { display: flex; align-items: flex-end; justify-content: space-between; margin: 6px 0 24px; }
+  .cal-head .month-name { font-size: 36px; font-weight: 300; letter-spacing: -1.2px; }
+  .cal-head .month-name .yr { font-size: 12px; color: var(--ink-3); letter-spacing: 1px; font-weight: 400; margin-left: 10px; vertical-align: middle; }
+  .cal-nav { display: flex; gap: 16px; color: var(--ink-3); font-size: 18px; align-items: center; }
+  .cal-nav button { padding: 4px 8px; }
+  .cal-nav button:hover { color: var(--ink); }
+
+  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .weekdays { font-size: 10px; color: var(--ink-3); letter-spacing: 0.5px; margin-bottom: 8px; text-transform: uppercase; }
+  .weekdays span { text-align: center; }
+  .cell {
+    aspect-ratio: 1/1.05; border: 1px solid var(--line-soft); border-radius: 4px;
+    padding: 5px 5px 6px; display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 11px; color: var(--ink-2); cursor: pointer; transition: all 0.1s ease;
+  }
+  .cell:hover { border-color: var(--ink-3); }
+  .cell.faded { color: var(--ink-3); border-color: transparent; cursor: default; }
+  .cell.faded:hover { border-color: transparent; }
+  .cell .dot { width: 8px; height: 8px; border-radius: 999px; align-self: flex-end; background: transparent; }
+  .cell.today { border-color: var(--ink); border-width: 1.5px; }
+  .cell.empty .dot { border: 1px dashed var(--line); }
+  .cell.selected { background: #fbfbfa; }
+
+  .dot.t-work   { background: var(--t-work); }
+  .dot.t-play   { background: var(--t-play); }
+  .dot.t-rest   { background: var(--t-rest); }
+  .dot.t-travel { background: var(--t-travel); }
+  .dot.t-photo  { background: var(--t-photo); }
+  .dot.t-learn  { background: var(--t-learn); }
+  .dot.t-social { background: var(--t-social); }
+  .dot.t-sport  { background: var(--t-sport); }
+
+  .legend {
+    margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 6px 14px; font-size: 11px; color: var(--ink-2);
+  }
+  .legend .ll { display: flex; align-items: center; gap: 7px; }
+  .legend .dot { width: 8px; height: 8px; border-radius: 999px; }
+
+  .day-preview {
+    margin-top: 18px; padding: 14px; border: 1px solid var(--line-soft);
+    border-radius: 6px; background: #fbfbfa; font-size: 12.5px; color: var(--ink-2);
+    line-height: 1.6; min-height: 60px;
+  }
+  .day-preview .pdate { color: var(--ink-3); font-size: 10.5px; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
+  .day-preview .pnote {
+    font-family: "Noto Serif SC", "Cormorant Garamond", serif;
+    font-style: italic; font-size: 12.5px; color: var(--ink); margin-top: 8px;
+    padding-left: 10px; border-left: 2px solid var(--line);
+  }
+  .day-preview.empty { color: var(--ink-3); font-style: italic; }
+
+  /* ============ POEM VIEW ============ */
+  .seg-ctrl {
+    display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden;
+    margin-bottom: 22px;
+  }
+  .seg-ctrl button {
+    padding: 8px 16px; font-size: 12.5px; color: var(--ink-2); background: transparent;
+    border-right: 1px solid var(--line); letter-spacing: 0.3px;
+  }
+  .seg-ctrl button:last-child { border-right: none; }
+  .seg-ctrl button.active { background: var(--ink); color: #fff; }
+
+  .scope-info { font-size: 11px; color: var(--ink-3); letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 6px; }
+  .scope-date { font-size: 13.5px; color: var(--ink-2); margin-bottom: 4px; }
+
+  .poem-card {
+    margin: 24px 0 0; padding: 28px 4px 32px; min-height: 200px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .poem {
+    font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", "Songti SC", "Times New Roman", serif;
+    color: var(--ink); font-weight: 400; line-height: 2; letter-spacing: 0.2px;
+    white-space: pre-line;
+  }
+  .poem .ptitle {
+    display: block; font-weight: 500; font-size: 1.3em; margin-bottom: 1.1em; letter-spacing: 0.5px;
+  }
+  .poem.daily   { font-size: 19px; }
+  .poem.weekly  { font-size: 17px; }
+  .poem.monthly { font-size: 16.5px; line-height: 1.95; }
+  .poem.en.weekly, .poem.en.monthly { font-style: normal; }
+
+  .poem-meta {
+    margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--line-soft);
+    font-size: 11px; color: var(--ink-3); letter-spacing: 0.2px; line-height: 1.7;
+  }
+  .poem-meta .based { color: var(--ink-2); font-weight: 500; }
+  .poem-meta .stamp { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; margin-top: 8px; display: block; }
+  .mini-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .mini-chip { font-size: 11px; padding: 4px 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink-2); }
+  .mini-chip .d { display: inline-block; width: 6px; height: 6px; border-radius: 999px; margin-right: 6px; vertical-align: middle; background: var(--ink-3); }
+  .quote-line {
+    font-size: 12px; color: var(--ink-2); line-height: 1.55;
+    border-left: 2px solid var(--line); padding-left: 10px; margin-top: 10px;
+    font-family: "Cormorant Garamond", "Noto Serif SC", serif; font-style: italic;
+  }
+
+  .gen-btn {
+    margin-top: 24px; padding: 14px 0; width: 100%; background: var(--ink); color: #fff;
+    border-radius: 7px; font-size: 13px; letter-spacing: 0.5px;
+  }
+  .gen-btn:hover { background: #000; }
+  .gen-btn:disabled { background: var(--ink-3); cursor: not-allowed; }
+  .gen-btn .loading { display: inline-block; margin-right: 8px; }
+
+  .poem-empty {
+    margin-top: 24px; padding: 32px 20px; border: 1px dashed var(--line);
+    border-radius: 8px; text-align: center; color: var(--ink-3); font-size: 13px; line-height: 1.6;
+  }
+  .poem-empty .small { font-size: 11px; margin-top: 8px; color: var(--ink-3); }
+
+  .footer-actions {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; border-top: 1px solid var(--line-soft);
+  }
+  .footer-actions .share {
+    color: var(--ink); font-weight: 500; font-size: 12px;
+    border: 1px solid var(--line); padding: 7px 14px; border-radius: 5px;
+  }
+  .footer-actions .share:hover { border-color: var(--ink); }
+
+  .api-warn {
+    margin: 16px 0; padding: 10px 14px; font-size: 12px; line-height: 1.55;
+    background: #fbf6e8; border: 1px solid #efe2bd; border-radius: 5px; color: #6b5524;
+  }
+  .api-warn a { color: var(--ink); text-decoration: underline; cursor: pointer; }
+
+  /* ============ TABBAR ============ */
+  .tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    max-width: 480px; margin: 0 auto;
+    background: rgba(255,255,255,0.94); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-around;
+    padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+    z-index: 50;
+  }
+  .tab {
+    flex: 1; text-align: center; padding: 6px 0; font-size: 11px;
+    color: var(--ink-3); letter-spacing: 0.3px; font-weight: 400;
+  }
+  .tab.active { color: var(--ink); font-weight: 500; }
+  .tab .dot { display: inline-block; width: 4px; height: 4px; border-radius: 999px; background: var(--ink); margin-top: 4px; opacity: 0; }
+  .tab.active .dot { opacity: 1; }
+
+  @media (min-width: 600px) {
+    .tabbar { position: absolute; max-width: none; left: 0; right: 0; }
+  }
+
+  /* ============ MODALS ============ */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(20,20,20,0.4);
+    display: none; z-index: 100; align-items: flex-end; justify-content: center;
+    padding: 0;
+  }
+  .modal-backdrop.open { display: flex; }
+  @media (min-width: 600px) { .modal-backdrop { align-items: center; padding: 24px; } }
+
+  .modal {
+    background: #fff; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+    border-radius: 16px 16px 0 0; padding: 22px 22px 36px;
+  }
+  @media (min-width: 600px) { .modal { border-radius: 12px; } }
+
+  .modal h2 { font-size: 16px; font-weight: 500; margin: 0 0 18px; letter-spacing: 0.3px; display: flex; justify-content: space-between; align-items: center; }
+  .modal h2 .x { color: var(--ink-3); font-size: 22px; line-height: 1; cursor: pointer; padding: 0 4px; }
+  .modal h2 .x:hover { color: var(--ink); }
+  .modal label { display: block; font-size: 11px; color: var(--ink-2); letter-spacing: 0.5px; text-transform: uppercase; margin: 14px 0 6px; }
+  .modal input[type="password"], .modal input[type="text"] {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px;
+    font-size: 13px; background: #fbfbfa; outline: none;
+  }
+  .modal input:focus { border-color: var(--ink); background: #fff; }
+  .modal .help { font-size: 11.5px; color: var(--ink-3); line-height: 1.55; margin-top: 6px; }
+  .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+  .btn {
+    padding: 11px 16px; border-radius: 6px; font-size: 12.5px; letter-spacing: 0.3px;
+    border: 1px solid var(--line); color: var(--ink); background: #fff; flex: 1;
+  }
+  .btn:hover { border-color: var(--ink); }
+  .btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .btn.primary:hover { background: #000; }
+  .btn.danger { color: #a23030; border-color: #f1d3d3; }
+  .btn.danger:hover { background: #fbf0f0; }
+
+  /* ============ SHARE CARDS ============ */
+  .card-picker { display: flex; flex-direction: column; gap: 18px; }
+  .card-option { display: flex; flex-direction: column; gap: 8px; }
+  .card-option .opt-label { font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-3); display: flex; justify-content: space-between; align-items: center; }
+  .card-option .opt-label .name { color: var(--ink); font-weight: 500; }
+  .card-option .opt-label .meta { color: var(--ink-3); font-weight: 400; }
+
+  .share-card {
+    aspect-ratio: 4/5; border-radius: 8px;
+    padding: 38px 32px; display: flex; flex-direction: column;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 12px 28px -16px rgba(40,30,15,0.16);
+    cursor: pointer; transition: transform 0.15s ease;
+  }
+  .share-card:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 16px 36px -16px rgba(40,30,15,0.22); }
+
+  .share-card .scp {
+    font-family: "Cormorant Garamond", "Noto Serif SC", serif;
+    font-size: 19px; line-height: 2; letter-spacing: 0.2px;
+    margin: auto 0; white-space: pre-line;
+  }
+  .share-card .scp .t {
+    display: block; font-size: 1.35em; font-weight: 500; margin-bottom: 0.9em; letter-spacing: 0.5px;
+  }
+  .share-card .scm {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase;
+  }
+  .share-card .scm .brand {
+    font-family: "PingFang SC", "Inter", sans-serif; font-weight: 500;
+    letter-spacing: 0.4px; text-transform: none; font-size: 11px;
+    display: inline-flex; align-items: center;
+  }
+  .share-card .scm .brand .sub { opacity: 0.5; margin-left: 5px; font-weight: 400; font-size: 9.5px; letter-spacing: 0.3px; }
+
+  .share-card.editorial { background: #ffffff; border: 1px solid var(--line); color: var(--ink); }
+  .share-card.editorial .scm { color: var(--ink-3); }
+  .share-card.night { background: #0e0e10; color: #efece4; }
+  .share-card.night .scm { color: #6b6960; }
+  .share-card.night .scm .brand { color: #efece4; }
+  .share-card.tint { color: #1a221c; border: 1px solid rgba(0,0,0,0.06); }
+  .share-card.tint .scm { color: rgba(26,34,28,0.55); }
+  .share-card.tint .scm .brand { color: #1a221c; }
+
+  /* loading dots */
+  .loading-dots::after { content: "···"; display: inline-block; animation: dots 1.4s infinite; }
+  @keyframes dots { 0% { content: "·  "; } 33% { content: "·· "; } 66% { content: "···"; } }
+
+  .toast {
+    position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+    background: rgba(14,14,16,0.92); color: #fff; padding: 10px 18px;
+    border-radius: 6px; font-size: 12.5px; z-index: 200;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="app-header">
+    <div class="brand"><span class="logo-mark"><i></i><i></i><i></i></span>碎碎念<em data-i18n="brand_en">Murmur</em></div>
+    <div class="header-right">
+      <button class="lang" id="lang-toggle" title="Switch language">
+        <span id="lang-en">EN</span><span class="sep">·</span><span id="lang-zh">中</span>
+      </button>
+      <button class="icon-btn" id="open-settings" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ========== TODAY ========== -->
+    <section class="view" data-view="today" id="view-today">
+      <div class="day-head">
+        <div class="day-num" id="today-num">—</div>
+        <div class="day-meta">
+          <span class="month" id="today-month">—</span>
+          <span id="today-weekday">—</span>
+        </div>
+      </div>
+
+      <div class="section-label"><span data-i18n="themes_pick">Themes · pick 1–2</span></div>
+      <div class="chips" id="today-themes"></div>
+
+      <div class="section-label"><span data-i18n="mood_pick">Mood</span></div>
+      <div class="chips" id="today-moods"></div>
+
+      <div class="section-label" id="more-label-wrap" style="display:none;">
+        <span data-i18n="more_pick">A few more</span>
+        <button class="refresh-btn" id="refresh-subs"><span data-i18n="refresh">shuffle</span> ↻</button>
+      </div>
+      <div class="chips" id="today-subs"></div>
+
+      <div class="section-label">
+        <span data-i18n="objects_label">Things around</span>
+        <button class="refresh-btn" id="refresh-objects"><span data-i18n="refresh">shuffle</span> ↻</button>
+      </div>
+      <div class="chips" id="today-objects"></div>
+
+      <div class="one-line-wrap">
+        <textarea class="one-line" id="today-note" rows="1" data-i18n-placeholder="oneline_ph" placeholder="A line if you want… (optional)"></textarea>
+      </div>
+
+      <button class="save-btn" id="save-btn" data-i18n="save_today">Compose</button>
+    </section>
+
+    <!-- ========== CALENDAR ========== -->
+    <section class="view" data-view="calendar" id="view-calendar">
+      <div class="cal-head">
+        <div class="month-name"><span id="cal-monthname">May</span><span class="yr" id="cal-year">2026</span></div>
+        <div class="cal-nav">
+          <button id="cal-prev">‹</button>
+          <button id="cal-today" style="font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase;" data-i18n="today">today</button>
+          <button id="cal-next">›</button>
+        </div>
+      </div>
+
+      <div class="weekdays" id="cal-weekdays"></div>
+      <div class="grid" id="cal-grid"></div>
+
+      <div class="day-preview" id="cal-preview" data-i18n="tap_day">Tap a day to see what's there.</div>
+
+      <div class="legend" id="cal-legend"></div>
+    </section>
+
+    <!-- ========== POEM ========== -->
+    <section class="view" data-view="poem" id="view-poem">
+      <div class="seg-ctrl" id="poem-seg">
+        <button data-scope="daily"   class="active" data-i18n="daily">Daily</button>
+        <button data-scope="weekly"  data-i18n="weekly">Weekly</button>
+        <button data-scope="monthly" data-i18n="monthly">Monthly</button>
+      </div>
+
+      <div class="scope-info" id="poem-scope-info">Yesterday</div>
+      <div class="scope-date" id="poem-scope-date">—</div>
+
+      <div id="poem-area"></div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-tab="today"><span data-i18n="today">Today</span><div class="dot"></div></button>
+    <button class="tab" data-tab="calendar"><span data-i18n="calendar">Calendar</span><div class="dot"></div></button>
+    <button class="tab" data-tab="poem"><span data-i18n="poem">Poems</span><div class="dot"></div></button>
+  </nav>
+</div>
+
+<!-- ========== MODAL: SETTINGS ========== -->
+<div class="modal-backdrop" id="modal-settings-bd">
+  <div class="modal">
+    <h2><span data-i18n="settings">Settings</span> <span class="x" data-close="settings">×</span></h2>
+
+    <label data-i18n="claude_api_key">Claude API key</label>
+    <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off" spellcheck="false" />
+    <div class="help" data-i18n="api_help">Stored only in your browser (localStorage). Used to call claude-opus-4-7 for poem generation. <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer">Get a key</a>.</div>
+
+    <label data-i18n="language">Language</label>
+    <div class="chips" id="settings-lang">
+      <button class="chip" data-lang="en">English</button>
+      <button class="chip" data-lang="zh">中文</button>
+    </div>
+
+    <label data-i18n="model_label">Model</label>
+    <div class="chips" id="settings-model">
+      <button class="chip" data-model="claude-opus-4-7">Opus 4.7</button>
+      <button class="chip" data-model="claude-sonnet-4-6">Sonnet 4.6</button>
+    </div>
+    <div class="help" data-i18n="model_help">Opus writes better poems; Sonnet is faster.</div>
+
+    <div class="modal-actions">
+      <button class="btn" id="reset-demo" data-i18n="reset_demo">Reseed demo</button>
+      <button class="btn danger" id="clear-all" data-i18n="clear_all">Clear all data</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn primary" data-close="settings" data-i18n="done">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODAL: SHARE ========== -->
+<div class="modal-backdrop" id="modal-share-bd">
+  <div class="modal">
+    <h2><span data-i18n="share_as_card">Share as card</span> <span class="x" data-close="share">×</span></h2>
+    <div class="help" style="margin-bottom: 18px;" data-i18n="share_help">Pick a style. Tap a card to download as PNG.</div>
+    <div class="card-picker" id="card-picker"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const STORAGE_KEY = 'murmur.v1';
+
+// Put your own Claude API key here, OR enter it via Settings inside the app.
+// (Empty by default so it's safe to commit / share. localStorage will persist
+// whatever you set in Settings.)
+const DEFAULT_API_KEY = '';
+
+const THEMES = [
+  { key: 'work',   zh: '工作', en: 'Work',   color: '#2b3340', cls: 't-work' },
+  { key: 'play',   zh: '玩',   en: 'Play',   color: '#b88a2a', cls: 't-play' },
+  { key: 'rest',   zh: '躺平', en: 'Rest',   color: '#a8a499', cls: 't-rest' },
+  { key: 'travel', zh: '旅行', en: 'Travel', color: '#3f6e62', cls: 't-travel' },
+  { key: 'photo',  zh: '拍照', en: 'Photo',  color: '#b25c47', cls: 't-photo' },
+  { key: 'learn',  zh: '学习', en: 'Study',  color: '#5e4f7a', cls: 't-learn' },
+  { key: 'social', zh: '社交', en: 'Social', color: '#a25f7c', cls: 't-social' },
+  { key: 'sport',  zh: '运动', en: 'Sport',  color: '#3f6a8a', cls: 't-sport' },
+];
+
+const MOODS = [
+  { key: 'happy',   zh: '很开心', en: 'Happy',   heat: 'g3', tint: '#e9efe5' },
+  { key: 'drained', zh: '很透支', en: 'Drained', heat: 'r3', tint: '#f1e2dd' },
+  { key: 'plain',   zh: '平淡',   en: 'Plain',   heat: 'n',  tint: '#ececea' },
+  { key: 'down',    zh: '沮丧',   en: 'Down',    heat: 'r2', tint: '#ecdcd5' },
+  { key: 'anxious', zh: '焦虑',   en: 'Anxious', heat: 'r1', tint: '#f1e8e4' },
+];
+
+// Objects pool — concrete physical things. Universal (not per-theme).
+// These become the primary nouns the poem can draw from.
+const OBJECTS = {
+  zh: ['手表','闹钟','啤酒','咖啡','茶','烟','打火机','雨伞','自行车','手机','耳机','椅子','灯','窗','床','鞋','包','钥匙','眼镜','帽子','围巾','书','笔记本','杯子','镜子','钱包','卡片','信','水壶','水瓶','餐具','餐巾纸','牙刷','枕头','毛巾','风扇','空调','门','窗帘','沙发','桌子','植物','花','树叶','石头','沙子','海','风','云','雪','雨','猫','狗','鸟','路灯','行李','票根','钢笔','糖','面包','地铁'],
+  en: ['watch','alarm clock','beer','coffee','tea','cigarette','lighter','umbrella','bike','phone','headphones','chair','lamp','window','bed','shoes','bag','keys','glasses','hat','scarf','book','notebook','cup','mirror','wallet','card','letter','kettle','bottle','towel','fan','door','curtain','sofa','desk','plant','flower','leaf','stone','sand','sea','wind','cloud','snow','rain','cat','dog','bird','street lamp','luggage','ticket','pen','sugar','bread','subway','pillow','salt','rug','clock'],
+};
+
+// Sub-tag pools, ~10 per theme; we show 5 at random per record
+const SUBS = {
+  work: {
+    zh: ['有收获', '赚到钱了', '还需多学习', '被会议淹没', '想换状态', '干完了', '加班', '同事来烦', '好累', '没头绪'],
+    en: ['Productive', 'Made money', 'Need to learn', 'Drowned in meetings', 'Want a change', 'Finished', 'Overtime', 'Interrupted', 'Exhausted', 'Lost'],
+  },
+  play: {
+    zh: ['难得放空', '痛快', '没尽兴', '跟朋友', '一个人', '花了钱', '没花钱', '累但开心', '有点空虚', '想再来一次'],
+    en: ['Unwound', 'Great fun', 'Not enough', 'With friends', 'Alone', 'Spent money', 'Free', 'Tired but happy', 'Slightly hollow', 'Want again'],
+  },
+  rest: {
+    zh: ['什么也没干', '睡了很多', '看了一天剧', '啥也不想', '治愈', '浪费时间', '修复中', '出门也不想'],
+    en: ['Nothing', 'Slept a lot', 'Watched all day', 'Blank mind', 'Healing', 'Wasted time', 'Recovering', 'Wouldn\'t go out'],
+  },
+  travel: {
+    zh: ['走了很远', '新的地方', '老地方', '一个人', '跟人', '累', '拍了很多', '想再去', '没想到'],
+    en: ['Far', 'New place', 'Old place', 'Alone', 'With someone', 'Tiring', 'Photographed a lot', 'Want to return', 'Unexpected'],
+  },
+  photo: {
+    zh: ['拍了人', '拍了风景', '拍了猫', '街拍', '没拍好', '拍得满意', '错过了'],
+    en: ['People', 'Scenery', 'A cat', 'Street', 'Missed it', 'Got it', 'Almost missed'],
+  },
+  learn: {
+    zh: ['学到东西', '看不懂', '进度慢', '想清楚了', '还在迷茫', '有兴趣'],
+    en: ['Learned something', 'Didn\'t get it', 'Slow', 'Clarity', 'Still lost', 'Interested'],
+  },
+  social: {
+    zh: ['老朋友', '新朋友', '家人', '不想说话', '喝多了', '聊得好', '尴尬'],
+    en: ['Old friends', 'New friends', 'Family', 'Quiet mode', 'Drank too much', 'Good talk', 'Awkward'],
+  },
+  sport: {
+    zh: ['累', '出汗了', '没坚持', '状态好', '受伤', '突破'],
+    en: ['Tired', 'Sweat', 'Skipped', 'Great form', 'Injured', 'Breakthrough'],
+  },
+};
+
+// ============================================================
+// I18N
+// ============================================================
+const I18N = {
+  en: {
+    brand_en: 'Murmur',
+    today: 'Today', calendar: 'Calendar', poem: 'Poems',
+    themes_pick: 'Themes · pick 1–2', mood_pick: 'Mood',
+    more_pick: 'A few more', suggested: 'suggested',
+    objects_label: 'Things around',
+    refresh: 'shuffle',
+    oneline_ph: 'A line if you want… (optional)',
+    save_today: 'Compose', saved_check: 'Composed ✓',
+    tap_day: 'Tap a day to see what\'s there.',
+    settings: 'Settings', claude_api_key: 'Claude API key',
+    api_help: 'Stored only in your browser. Used to call Claude for poem generation.',
+    language: 'Language', model_label: 'Model',
+    model_help: 'Opus writes better poems; Sonnet is faster.',
+    reset_demo: 'Reseed demo', clear_all: 'Clear all data', done: 'Done',
+    daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly',
+    yesterday: 'Yesterday', last_week: 'Last week', this_month: 'This month',
+    no_record: 'No record for this day yet.',
+    no_record_short: 'Tap a day above.',
+    generate_poem: 'Write the poem',
+    generating: 'Writing',
+    based_on: 'murmurs', written_at: 'generated', ai_title: 'AI title',
+    share_as_card: 'Share as card',
+    share_help: 'Pick a style. Tap to share or save.',
+    style_editorial: 'Editorial · white', style_night: 'Night · ink', style_tint: 'Tint · today\'s mood',
+    saved_image: 'Saved', shared: 'Shared', api_required: 'Add your Claude API key in settings →',
+    open_settings: 'open settings',
+    share: 'Share',
+    poem_empty_day: 'Yesterday has no record — nothing to write about.',
+    poem_empty_week: 'Not enough records this week yet.',
+    poem_empty_month: 'Not enough records this month yet.',
+    demo_seeded: 'Demo data seeded.',
+    cleared: 'All data cleared.',
+    download_failed: 'Could not save image.',
+    weekdays_short: ['M','T','W','T','F','S','S'],
+    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    month_short: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    weekday_long: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+  },
+  zh: {
+    brand_en: 'Murmur',
+    today: '今天', calendar: '日历', poem: '诗',
+    themes_pick: '主题 · 选 1–2 个', mood_pick: '心情',
+    more_pick: '碎念', suggested: '建议',
+    objects_label: '物件',
+    refresh: '换一批',
+    oneline_ph: '想多说一句… (可选)',
+    save_today: '写下成诗', saved_check: '已写下',
+    tap_day: '点一格看那天发生了什么。',
+    settings: '设置', claude_api_key: 'Claude API key',
+    api_help: '只存在你的浏览器里,用来调 Claude 生成诗。',
+    language: '语言', model_label: '模型',
+    model_help: 'Opus 写得更好,Sonnet 更快。',
+    reset_demo: '重置 demo 数据', clear_all: '清空所有', done: '完成',
+    daily: '日', weekly: '周', monthly: '月',
+    yesterday: '昨日', last_week: '上周', this_month: '这个月',
+    no_record: '这天没记录。',
+    no_record_short: '点上面一格。',
+    generate_poem: '写这首诗',
+    generating: '正在写',
+    based_on: '碎念', written_at: '生成于', ai_title: 'AI 起的标题',
+    share_as_card: '保存为图片',
+    share_help: '选一种风格。点卡片分享或保存。',
+    style_editorial: '白底极简', style_night: '夜墨', style_tint: '微染色 · 当天的心情',
+    saved_image: '已保存', shared: '已分享', api_required: '在设置里加上 Claude API key →',
+    open_settings: '去设置',
+    share: '保存为图片',
+    poem_empty_day: '昨天没记录——没东西可写。',
+    poem_empty_week: '这周记录还不够。',
+    poem_empty_month: '这个月记录还不够。',
+    demo_seeded: '已重置 demo 数据。',
+    cleared: '所有数据已清空。',
+    download_failed: '保存失败,请重试。',
+    weekdays_short: ['一','二','三','四','五','六','日'],
+    months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    month_short: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+    weekday_long: ['周一','周二','周三','周四','周五','周六','周日'],
+  },
+};
+
+function t(key) { return I18N[state.settings.language][key] || key; }
+function labelFor(item) { return item[state.settings.language] || item.en; }
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  records: {},          // 'YYYY-MM-DD' -> { themes:[], mood, subs:[], note, subPool:[] }
+  poems: { daily: {}, weekly: {}, monthly: {} },
+  settings: { language: 'en', apiKey: '', model: 'claude-opus-4-7' },
+  ui: {
+    poemScope: 'daily',
+    calendarDate: new Date(),  // Date object representing currently viewed month
+    selectedDate: null,
+    sharePoem: null,
+  },
+};
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    state.records  = parsed.records  || {};
+    state.poems    = parsed.poems    || { daily: {}, weekly: {}, monthly: {} };
+    state.settings = { ...state.settings, ...(parsed.settings || {}) };
+  } catch (e) { console.warn('load failed', e); }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      records: state.records, poems: state.poems, settings: state.settings,
+    }));
+  } catch (e) { console.warn('save failed', e); }
+}
+
+// ============================================================
+// DATE HELPERS
+// ============================================================
+function iso(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+function todayObj() { return new Date(); }
+function yesterdayObj() { const d = new Date(); d.setDate(d.getDate() - 1); return d; }
+function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+
+// ISO week (Mon = first day)
+function weekStart(d) {
+  const dt = new Date(d);
+  const day = (dt.getDay() + 6) % 7; // 0 = Mon
+  dt.setDate(dt.getDate() - day);
+  dt.setHours(0,0,0,0);
+  return dt;
+}
+function weekKey(d) {
+  const ws = weekStart(d);
+  return `${ws.getFullYear()}-W${iso(ws).slice(5)}`; // 'YYYY-WMM-DD' = week-of starting Mon
+}
+function monthKey(d) {
+  return iso(d).slice(0, 7);
+}
+
+// ============================================================
+// SUGGESTION POOLS
+// ============================================================
+function shufflePool(pool, n, seed = null) {
+  if (pool.length <= n) return pool.slice();
+  const seedNum = seed ? hashString(seed) : Math.random() * 1e9 | 0;
+  const arr = pool.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.abs(((seedNum * (i + 1)) ^ (seedNum >> (i & 31))) % (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, n);
+}
+function pickSubs(themeKey, lang, n = 5, seed = null) {
+  const pool = (SUBS[themeKey] && SUBS[themeKey][lang]) || [];
+  return shufflePool(pool, n, seed);
+}
+function pickObjects(lang, n = 6, seed = null) {
+  const pool = OBJECTS[lang] || [];
+  return shufflePool(pool, n, seed);
+}
+function hashString(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return h;
+}
+
+// ============================================================
+// DEMO SEED
+// ============================================================
+function seedDemo() {
+  const now = todayObj();
+  // Seed last 22 days with reasonable patterns. Objects ground the days.
+  const pattern = [
+    { themes:['rest'],   mood:'happy',  note:'',                                                      objs:['床','窗'] },
+    { themes:['travel'], mood:'happy',  note:'去海边一趟,水很冷。',                                  objs:['海','沙子','风'] },
+    { themes:['travel'], mood:'plain',  note:'',                                                      objs:['行李','票根'] },
+    { themes:['work'],   mood:'plain',  note:'',                                                      objs:['咖啡'] },
+    { themes:['work'],   mood:'drained',note:'会议太多。',                                            objs:['咖啡','灯'] },
+    { themes:['work'],   mood:'drained',note:'',                                                      objs:['灯'] },
+    { themes:['work'],   mood:'plain',  note:'',                                                      objs:[] },
+    { themes:['photo'],  mood:'happy',  note:'拍了一只猫,在围墙上。',                                objs:['猫'] },
+    { themes:['play'],   mood:'happy',  note:'',                                                      objs:['啤酒','耳机'] },
+    { themes:['rest'],   mood:'plain',  note:'',                                                      objs:['沙发'] },
+    { themes:['work'],   mood:'plain',  note:'',                                                      objs:['咖啡'] },
+    { themes:['work'],   mood:'drained',note:'',                                                      objs:['闹钟','咖啡'] },
+    { themes:['learn'],  mood:'happy',  note:'看了一篇好文章。',                                      objs:['书','茶'] },
+    { themes:['work'],   mood:'drained',note:'晚上九点办公室只剩我一盏灯亮着。',                      objs:['灯','咖啡'] },
+    { themes:['work'],   mood:'drained',note:'',                                                      objs:[] },
+    { themes:['play'],   mood:'happy',  note:'',                                                      objs:['啤酒'] },
+    { themes:['rest'],   mood:'plain',  note:'',                                                      objs:['床'] },
+    { themes:['work'],   mood:'plain',  note:'',                                                      objs:[] },
+    { themes:['work'],   mood:'drained',note:'',                                                      objs:['咖啡','闹钟'] },
+    { themes:['work'],   mood:'drained',note:'',                                                      objs:[] },
+    { themes:['photo'],  mood:'happy',  note:'又见到那只猫了。',                                      objs:['猫'] },
+    { themes:['play'],   mood:'happy',  note:'在乌节路坐了两个小时,听见邻桌一直在笑。',              objs:['咖啡','椅子'] },
+  ];
+  const lang = state.settings.language;
+  for (let i = 0; i < pattern.length; i++) {
+    const d = addDays(now, -(pattern.length - i));
+    const p = pattern[i];
+    const key = iso(d);
+    const subPool = pickSubs(p.themes[0], lang, 5, key);
+    const numSubs = (hashString(key) % 2) === 0 ? 1 : 2;
+    const subs = subPool.slice(0, numSubs);
+    const objectPool = pickObjects(lang, 6, key);
+    state.records[key] = {
+      themes: p.themes, mood: p.mood, subs, objects: p.objs || [],
+      note: p.note, subPool, objectPool,
+    };
+  }
+  // Leave 4 days ago empty as a "missed" day
+  const gapKey = iso(addDays(now, -4));
+  delete state.records[gapKey];
+}
+
+// ============================================================
+// VIEW NAVIGATION
+// ============================================================
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.dataset.view === view));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === view));
+  if (view === 'today') renderToday();
+  if (view === 'calendar') renderCalendar();
+  if (view === 'poem') renderPoem();
+}
+
+// ============================================================
+// RENDER: TODAY
+// ============================================================
+function renderToday() {
+  const d = todayObj();
+  const lang = state.settings.language;
+  document.getElementById('today-num').textContent = d.getDate();
+  document.getElementById('today-month').textContent =
+    `${I18N[lang].month_short[d.getMonth()]} · ${I18N[lang].weekday_long[(d.getDay() + 6) % 7]}`;
+  const wkNum = Math.ceil(((d - new Date(d.getFullYear(),0,1)) / 86400000 + new Date(d.getFullYear(),0,1).getDay()+1)/7);
+  document.getElementById('today-weekday').textContent =
+    lang === 'zh' ? `第 ${wkNum} 周` : `Week ${wkNum}`;
+
+  const key = iso(d);
+  const rec = state.records[key] || { themes: [], mood: null, subs: [], note: '', subPool: [] };
+
+  // THEMES
+  const themesEl = document.getElementById('today-themes');
+  themesEl.innerHTML = '';
+  THEMES.forEach(th => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (rec.themes.includes(th.key) ? ' selected' : '');
+    b.textContent = th[lang];
+    b.onclick = () => toggleTheme(th.key);
+    themesEl.appendChild(b);
+  });
+
+  // MOODS
+  const moodsEl = document.getElementById('today-moods');
+  moodsEl.innerHTML = '';
+  MOODS.forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (rec.mood === m.key ? ' selected' : '');
+    b.textContent = m[lang];
+    b.onclick = () => setMood(m.key);
+    moodsEl.appendChild(b);
+  });
+
+  // SUBS (only show if at least one theme picked)
+  const subsEl = document.getElementById('today-subs');
+  const moreLabel = document.getElementById('more-label-wrap');
+  subsEl.innerHTML = '';
+  if (rec.themes.length > 0) {
+    moreLabel.style.display = '';
+    if (!rec.subPool || !rec.subPool.length) {
+      rec.subPool = pickSubs(rec.themes[0], lang, 5, key);
+      saveRecord(key, rec);
+    }
+    rec.subPool.forEach(sub => {
+      const b = document.createElement('button');
+      b.className = 'chip sub' + (rec.subs.includes(sub) ? ' selected' : '');
+      b.textContent = sub;
+      b.onclick = () => toggleSub(sub);
+      subsEl.appendChild(b);
+    });
+  } else {
+    moreLabel.style.display = 'none';
+  }
+
+  // OBJECTS — always shown
+  const objsEl = document.getElementById('today-objects');
+  objsEl.innerHTML = '';
+  if (!rec.objectPool || !rec.objectPool.length) {
+    rec.objectPool = pickObjects(lang, 6, key);
+    saveRecord(key, rec);
+  }
+  // Show pool + any selected objects that aren't in the pool (e.g. from a previous pool)
+  const allObjs = [...new Set([...rec.objectPool, ...(rec.objects || [])])];
+  allObjs.forEach(obj => {
+    const b = document.createElement('button');
+    b.className = 'chip sub' + ((rec.objects || []).includes(obj) ? ' selected' : '');
+    b.textContent = obj;
+    b.onclick = () => toggleObject(obj);
+    objsEl.appendChild(b);
+  });
+
+  // NOTE
+  const noteEl = document.getElementById('today-note');
+  noteEl.value = rec.note || '';
+
+  // SAVE BUTTON — reset to default state
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.classList.remove('done');
+  saveBtn.textContent = t('save_today');
+}
+
+function getOrInitTodayRecord() {
+  const key = iso(todayObj());
+  if (!state.records[key]) {
+    state.records[key] = { themes: [], mood: null, subs: [], objects: [], note: '', subPool: [], objectPool: [] };
+  }
+  // Backfill missing fields for older records (defensive)
+  const r = state.records[key];
+  if (!r.objects) r.objects = [];
+  if (!r.objectPool) r.objectPool = [];
+  return [key, r];
+}
+function saveRecord(key, rec) {
+  state.records[key] = rec;
+  save();
+  // Mark save button as "dirty" if user has edited since last explicit save
+  const saveBtn = document.getElementById('save-btn');
+  if (saveBtn && saveBtn.classList.contains('done')) {
+    saveBtn.classList.remove('done');
+    saveBtn.textContent = t('save_today');
+  }
+}
+function toggleTheme(themeKey) {
+  const [key, rec] = getOrInitTodayRecord();
+  const i = rec.themes.indexOf(themeKey);
+  if (i >= 0) {
+    rec.themes.splice(i, 1);
+    if (rec.themes.length > 0) {
+      rec.subPool = pickSubs(rec.themes[0], state.settings.language, 5, key);
+      rec.subs = rec.subs.filter(s => rec.subPool.includes(s));
+    } else {
+      rec.subPool = []; rec.subs = [];
+    }
+  } else {
+    if (rec.themes.length >= 2) rec.themes.shift();
+    rec.themes.push(themeKey);
+    rec.subPool = pickSubs(rec.themes[0], state.settings.language, 5, key);
+    rec.subs = rec.subs.filter(s => rec.subPool.includes(s));
+  }
+  saveRecord(key, rec);
+  renderToday();
+}
+function setMood(moodKey) {
+  const [key, rec] = getOrInitTodayRecord();
+  rec.mood = rec.mood === moodKey ? null : moodKey;
+  saveRecord(key, rec);
+  renderToday();
+}
+function toggleSub(sub) {
+  const [key, rec] = getOrInitTodayRecord();
+  const i = rec.subs.indexOf(sub);
+  if (i >= 0) rec.subs.splice(i, 1); else rec.subs.push(sub);
+  saveRecord(key, rec);
+  renderToday();
+}
+function toggleObject(obj) {
+  const [key, rec] = getOrInitTodayRecord();
+  if (!rec.objects) rec.objects = [];
+  const i = rec.objects.indexOf(obj);
+  if (i >= 0) rec.objects.splice(i, 1); else rec.objects.push(obj);
+  saveRecord(key, rec);
+  renderToday();
+}
+function refreshSubs() {
+  const [key, rec] = getOrInitTodayRecord();
+  if (rec.themes.length === 0) return;
+  // Add a random salt so we get a different shuffle than before
+  const newPool = pickSubs(rec.themes[0], state.settings.language, 5, key + '|' + Date.now());
+  rec.subPool = newPool;
+  // Drop any selected subs that are no longer in pool
+  rec.subs = rec.subs.filter(s => newPool.includes(s));
+  saveRecord(key, rec);
+  renderToday();
+}
+function refreshObjects() {
+  const [key, rec] = getOrInitTodayRecord();
+  const newPool = pickObjects(state.settings.language, 6, key + '|' + Date.now());
+  rec.objectPool = newPool;
+  // Don't drop already-selected objects — keep them so refresh doesn't lose user's choices
+  saveRecord(key, rec);
+  renderToday();
+}
+function commitTodaySave() {
+  const [key, rec] = getOrInitTodayRecord();
+  save();
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.classList.add('done');
+  saveBtn.textContent = t('saved_check');
+  // No reset timer — stays "saved" until user edits something
+}
+
+// ============================================================
+// RENDER: CALENDAR
+// ============================================================
+function renderCalendar() {
+  const d = state.ui.calendarDate;
+  const lang = state.settings.language;
+  document.getElementById('cal-monthname').textContent = I18N[lang].months[d.getMonth()];
+  document.getElementById('cal-year').textContent = d.getFullYear();
+
+  // weekdays
+  const wkEl = document.getElementById('cal-weekdays');
+  wkEl.innerHTML = '';
+  I18N[lang].weekdays_short.forEach(w => {
+    const s = document.createElement('span'); s.textContent = w; wkEl.appendChild(s);
+  });
+
+  // grid
+  const gridEl = document.getElementById('cal-grid');
+  gridEl.innerHTML = '';
+  const year = d.getFullYear(), month = d.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  // Leading: from prev month
+  const leadCount = (firstDay.getDay() + 6) % 7; // Mon=0
+  for (let i = leadCount; i > 0; i--) {
+    const dd = new Date(year, month, 1 - i);
+    gridEl.appendChild(makeCell(dd, true));
+  }
+  // This month
+  for (let i = 1; i <= lastDay.getDate(); i++) {
+    const dd = new Date(year, month, i);
+    gridEl.appendChild(makeCell(dd, false));
+  }
+  // Trailing: from next month, to fill last week row
+  const total = leadCount + lastDay.getDate();
+  const tailCount = (7 - (total % 7)) % 7;
+  for (let i = 1; i <= tailCount; i++) {
+    const dd = new Date(year, month + 1, i);
+    gridEl.appendChild(makeCell(dd, true));
+  }
+
+  // legend
+  const legEl = document.getElementById('cal-legend');
+  legEl.innerHTML = '';
+  THEMES.forEach(th => {
+    const wrap = document.createElement('span');
+    wrap.className = 'll';
+    wrap.innerHTML = `<i class="dot ${th.cls}"></i> ${th[lang]}`;
+    legEl.appendChild(wrap);
+  });
+
+  // preview area
+  if (state.ui.selectedDate) renderDayPreview(state.ui.selectedDate);
+  else document.getElementById('cal-preview').textContent = t('tap_day');
+}
+function makeCell(dd, faded) {
+  const key = iso(dd);
+  const rec = state.records[key];
+  const todayKey = iso(todayObj());
+  const isToday = key === todayKey;
+  const isFuture = dd > todayObj();
+  const cell = document.createElement('div');
+  cell.className = 'cell' + (faded || isFuture ? ' faded' : '') + (isToday ? ' today' : '') + (state.ui.selectedDate === key ? ' selected' : '') + (!rec && !isFuture && !faded ? ' empty' : '');
+  cell.innerHTML = `<span>${dd.getDate()}</span><span class="dot ${rec && THEMES.find(t=>t.key===rec.themes[0]) ? THEMES.find(t=>t.key===rec.themes[0]).cls : ''}"></span>`;
+  if (!faded && !isFuture) {
+    cell.onclick = () => {
+      state.ui.selectedDate = key;
+      renderCalendar();
+    };
+  }
+  return cell;
+}
+function renderDayPreview(key) {
+  const lang = state.settings.language;
+  const rec = state.records[key];
+  const el = document.getElementById('cal-preview');
+  if (!rec) {
+    el.classList.add('empty');
+    el.innerHTML = `<div class="pdate">${formatDateLong(key, lang)}</div>${t('no_record')}`;
+    return;
+  }
+  el.classList.remove('empty');
+  const themeLabels = rec.themes.map(k => THEMES.find(th=>th.key===k)[lang]).join(' · ');
+  const moodLabel = rec.mood ? MOODS.find(m=>m.key===rec.mood)[lang] : '';
+  const subLabels = (rec.subs || []).join(' · ');
+  const objLabels = (rec.objects || []).join(' · ');
+  let html = `<div class="pdate">${formatDateLong(key, lang)}</div>`;
+  html += [themeLabels, moodLabel, subLabels, objLabels].filter(Boolean).join(' · ');
+  if (rec.note) html += `<div class="pnote">「${rec.note}」</div>`;
+  el.innerHTML = html;
+}
+function formatDateLong(key, lang) {
+  const [y,m,d] = key.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  const wd = I18N[lang].weekday_long[(dt.getDay()+6)%7];
+  if (lang === 'zh') return `${y}年${m}月${d}日 · ${wd}`;
+  return `${I18N[lang].month_short[m-1]} ${d}, ${y} · ${wd}`;
+}
+
+// ============================================================
+// RENDER: POEM
+// ============================================================
+function renderPoem() {
+  const scope = state.ui.poemScope;
+  const lang = state.settings.language;
+  document.querySelectorAll('#poem-seg button').forEach(b =>
+    b.classList.toggle('active', b.dataset.scope === scope)
+  );
+
+  // Determine date context
+  let key, displayDate, scopeInfo;
+  if (scope === 'daily') {
+    const y = yesterdayObj();
+    key = iso(y);
+    displayDate = formatDateLong(key, lang);
+    scopeInfo = t('yesterday');
+  } else if (scope === 'weekly') {
+    // "Last completed week" — Mon to Sun preceding today
+    const y = yesterdayObj();
+    const ws = weekStart(y);
+    const we = addDays(ws, 6);
+    key = weekKey(ws);
+    displayDate = `${formatShort(ws, lang)} – ${formatShort(we, lang)}`;
+    scopeInfo = t('last_week');
+  } else {
+    const t0 = todayObj();
+    key = monthKey(t0);
+    displayDate = `${I18N[lang].months[t0.getMonth()]} ${t0.getFullYear()}`;
+    scopeInfo = t('this_month');
+  }
+  document.getElementById('poem-scope-info').textContent = scopeInfo;
+  document.getElementById('poem-scope-date').textContent = displayDate;
+
+  // Existing poem?
+  const poem = state.poems[scope][key];
+  const area = document.getElementById('poem-area');
+  area.innerHTML = '';
+
+  // Need a record? Check availability
+  const recordsInScope = recordsForScope(scope);
+
+  if (poem) {
+    area.appendChild(renderPoemBlock(poem, scope, recordsInScope));
+  } else if (recordsInScope.length === 0) {
+    const emptyKey = scope === 'daily' ? 'poem_empty_day' : scope === 'weekly' ? 'poem_empty_week' : 'poem_empty_month';
+    const empty = document.createElement('div');
+    empty.className = 'poem-empty';
+    empty.textContent = t(emptyKey);
+    area.appendChild(empty);
+  } else {
+    if (!state.settings.apiKey) {
+      const warn = document.createElement('div');
+      warn.className = 'api-warn';
+      warn.innerHTML = `${t('api_required')} <a id="api-warn-link">${t('open_settings')}</a>`;
+      area.appendChild(warn);
+      document.getElementById('api-warn-link').onclick = () => openModal('settings');
+    }
+    const btn = document.createElement('button');
+    btn.className = 'gen-btn';
+    btn.textContent = t('generate_poem');
+    btn.disabled = !state.settings.apiKey;
+    btn.onclick = () => doGeneratePoem(scope, key, recordsInScope);
+    area.appendChild(btn);
+
+    // Show the underlying material as a preview of what AI will see
+    const preview = document.createElement('div');
+    preview.className = 'poem-meta';
+    preview.style.marginTop = '14px';
+    preview.innerHTML = `<div class="based">${t('based_on')}:</div>`;
+    const chips = document.createElement('div');
+    chips.className = 'mini-chips';
+    const themeCounts = {};
+    recordsInScope.forEach(r => r.themes.forEach(t2 => themeCounts[t2] = (themeCounts[t2]||0)+1));
+    Object.entries(themeCounts).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k, c]) => {
+      const th = THEMES.find(x=>x.key===k);
+      if (!th) return;
+      const chip = document.createElement('span');
+      chip.className = 'mini-chip';
+      chip.innerHTML = `<span class="d ${th.cls}"></span>${th[lang]}${c>1?' ×'+c:''}`;
+      chips.appendChild(chip);
+    });
+    preview.appendChild(chips);
+    const notes = recordsInScope.filter(r=>r.note && r.note.trim()).map(r=>r.note);
+    if (notes.length > 0) {
+      const ql = document.createElement('div');
+      ql.className = 'quote-line';
+      ql.textContent = `「${notes[notes.length-1]}」` + (notes.length>1 ? ` · +${notes.length-1}` : '');
+      preview.appendChild(ql);
+    }
+    area.appendChild(preview);
+  }
+}
+
+function recordsForScope(scope) {
+  const today = todayObj();
+  if (scope === 'daily') {
+    const y = yesterdayObj();
+    const rec = state.records[iso(y)];
+    return rec ? [rec] : [];
+  } else if (scope === 'weekly') {
+    const ws = weekStart(yesterdayObj());
+    const res = [];
+    for (let i = 0; i < 7; i++) {
+      const k = iso(addDays(ws, i));
+      if (state.records[k]) res.push({ ...state.records[k], _date: k });
+    }
+    return res;
+  } else {
+    const key = monthKey(today);
+    return Object.entries(state.records)
+      .filter(([k]) => k.startsWith(key))
+      .map(([k, v]) => ({ ...v, _date: k }));
+  }
+}
+
+function renderPoemBlock(poem, scope, records) {
+  const lang = state.settings.language;
+  const wrap = document.createElement('div');
+
+  const card = document.createElement('div');
+  card.className = 'poem-card';
+  const pEl = document.createElement('div');
+  pEl.className = `poem ${scope}` + (poem.lang === 'en' ? ' en' : '');
+  pEl.innerHTML = `<span class="ptitle">${escapeHtml(poem.title)}</span>${escapeHtml(poem.body)}`;
+  card.appendChild(pEl);
+  wrap.appendChild(card);
+
+  const meta = document.createElement('div');
+  meta.className = 'poem-meta';
+  meta.innerHTML = `<span class="based">${t('based_on')}</span>`;
+  const chips = document.createElement('div');
+  chips.className = 'mini-chips';
+  const themeCounts = {};
+  records.forEach(r => r.themes.forEach(t2 => themeCounts[t2] = (themeCounts[t2]||0)+1));
+  Object.entries(themeCounts).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k, c]) => {
+    const th = THEMES.find(x=>x.key===k);
+    if (!th) return;
+    const chip = document.createElement('span');
+    chip.className = 'mini-chip';
+    chip.innerHTML = `<span class="d ${th.cls}"></span>${th[lang]}${c>1?' ×'+c:''}`;
+    chips.appendChild(chip);
+  });
+  meta.appendChild(chips);
+  const notes = records.filter(r=>r.note && r.note.trim()).map(r=>r.note);
+  if (notes.length > 0) {
+    const ql = document.createElement('div');
+    ql.className = 'quote-line';
+    ql.textContent = `「${notes[notes.length-1]}」` + (notes.length>1 ? ` · +${notes.length-1}` : '');
+    meta.appendChild(ql);
+  }
+  const stamp = document.createElement('span');
+  stamp.className = 'stamp';
+  stamp.textContent = `${t('written_at')} ${formatStamp(poem.generated, lang)} · ${t('ai_title')}`;
+  meta.appendChild(stamp);
+  wrap.appendChild(meta);
+
+  const actions = document.createElement('div');
+  actions.className = 'footer-actions';
+  const spacer = document.createElement('span');
+  spacer.style.color = 'var(--ink-3)';
+  spacer.style.fontSize = '11px';
+  spacer.style.letterSpacing = '0.5px';
+  spacer.textContent = '';
+  actions.appendChild(spacer);
+  const share = document.createElement('button');
+  share.className = 'share';
+  share.textContent = t('share');
+  share.onclick = () => openShareModal(poem, scope, records);
+  actions.appendChild(share);
+  wrap.appendChild(actions);
+
+  return wrap;
+}
+
+function formatStamp(iso, lang) {
+  const d = new Date(iso);
+  if (lang === 'zh') return `${d.getMonth()+1}月${d.getDate()}日 上午`;
+  const months = I18N[lang].month_short;
+  return `${months[d.getMonth()]} ${d.getDate()} morning`;
+}
+function formatShort(d, lang) {
+  if (lang === 'zh') return `${d.getMonth()+1}月${d.getDate()}日`;
+  return `${I18N[lang].month_short[d.getMonth()]} ${d.getDate()}`;
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+// ============================================================
+// POEM GENERATION (Claude API direct from browser)
+// ============================================================
+async function doGeneratePoem(scope, key, records) {
+  if (!state.settings.apiKey) {
+    toast(t('api_required'));
+    openModal('settings');
+    return;
+  }
+  const btn = document.querySelector('#poem-area .gen-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = `<span class="loading-dots"></span>&nbsp;${t('generating')}`; }
+  try {
+    const lang = state.settings.language;
+    const poem = await generatePoem(scope, records, lang);
+    poem.generated = new Date().toISOString();
+    poem.lang = lang;
+    state.poems[scope][key] = poem;
+    save();
+    renderPoem();
+  } catch (e) {
+    console.error(e);
+    toast(String(e.message || e));
+    if (btn) { btn.disabled = false; btn.textContent = t('generate_poem'); }
+  }
+}
+
+function buildSystemPrompt() {
+  return `You are the poem writer for "碎碎念 / Murmur", an app where users tap a few daily tags. You turn their tags into a small imagist poem.
+
+CORE PRINCIPLES — strict:
+1. IMAGIST, NOT NARRATIVE. Show concrete images. Never summarize or describe their habits.
+2. NO TIME REFERENCES. Never write specific months/weeks/dates ("五月", "May", "Wednesday", "month-end"). Use only abstract markers if needed: "然后 / 后来 / 最近 / later / afterward".
+3. NO GOD-VIEW SUMMARY. No second-person "you spent...", no third-person observation. The poem is a glimpse, not a report. Avoid pronouns when possible.
+4. USE THE USER'S WORDS. The nouns in the poem should come primarily from the user's recorded OBJECTS (物件) and one-line notes. Themes and sub-tags suggest atmosphere and verbs. The one-line notes contain the most specific images — use them. Add only minimal connective tissue (particles, prepositions, line breaks).
+5. AI GENERATES THE TITLE. The title is a single word or short phrase taken from inside the poem — usually the strongest concrete image (often one of the recorded objects). Never use the date or the period as the title.
+6. MODERN MINIMAL ONLY. Chinese: like 韩东, 王小妮 — sparse, concrete, oblique. English: like Mary Oliver, Jack Gilbert — economical, image-led. NEVER classical Chinese (古风/古体诗). NEVER greeting-card sentiment. NEVER inspirational language.
+7. REPETITION IS A RHYTHM. "工作。/ 工作。/ 工作。" conveys frequency without statistics. Use repetition for emphasis.
+8. NO COUNTING. Never write numbers like "3 days" or "twice". Use "几次 / a few times" or repetition instead.
+
+LENGTH:
+- daily: 2–6 lines, one image moment
+- weekly: 6–12 lines, a small movement (may have 1–2 stanza breaks)
+- monthly: 12–20 lines, a larger arc (3–4 stanzas)
+
+OUTPUT — exact JSON, nothing else:
+{"title": "...", "body": "..."}
+
+Body uses \\n for line breaks, \\n\\n for stanza breaks. No prose around the JSON.`;
+}
+
+function buildUserPrompt(scope, records, lang) {
+  const themeCounts = {}, moodCounts = {}, subCounts = {}, objCounts = {};
+  const notes = [];
+  records.forEach(r => {
+    r.themes.forEach(k => themeCounts[k] = (themeCounts[k]||0)+1);
+    if (r.mood) moodCounts[r.mood] = (moodCounts[r.mood]||0)+1;
+    (r.subs || []).forEach(s => subCounts[s] = (subCounts[s]||0)+1);
+    (r.objects || []).forEach(o => objCounts[o] = (objCounts[o]||0)+1);
+    if (r.note && r.note.trim()) notes.push(r.note.trim());
+  });
+  const fmtCounts = (obj, mapFn) => Object.entries(obj).sort((a,b)=>b[1]-a[1])
+    .map(([k,c]) => `${mapFn(k)}${c>1?` (×${c})`:''}`).join(', ') || '(none)';
+  const themesStr = fmtCounts(themeCounts, k => (THEMES.find(x=>x.key===k) || {})[lang] || k);
+  const moodsStr  = fmtCounts(moodCounts,  k => (MOODS.find(x=>x.key===k)  || {})[lang] || k);
+  const subsStr   = fmtCounts(subCounts,   k => k);
+  const objsStr   = fmtCounts(objCounts,   k => k);
+  const notesStr  = notes.length ? notes.map(n => `- "${n}"`).join('\n') : '(none)';
+
+  return `Language: ${lang === 'zh' ? 'Chinese (简体)' : 'English'}
+Scope: ${scope}
+
+OBJECTS ("物件") — concrete nouns the user recorded; these are your primary palette:
+${objsStr}
+
+Hand-written one-line notes — the most specific images, use them:
+${notesStr}
+
+Themes (activity types) the user tapped:
+${themesStr}
+
+Moods:
+${moodsStr}
+
+Sub-tags ("碎念") — reflective fragments:
+${subsStr}
+
+Write the ${scope} poem now. Lean on the OBJECTS and NOTES for nouns. Return JSON only.`;
+}
+
+async function generatePoem(scope, records, lang) {
+  const body = {
+    model: state.settings.model || 'claude-opus-4-7',
+    max_tokens: 1024,
+    system: buildSystemPrompt(),
+    messages: [{ role: 'user', content: buildUserPrompt(scope, records, lang) }],
+  };
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': state.settings.apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`API ${res.status}: ${errText.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  const text = (data.content && data.content[0] && data.content[0].text) || '';
+  // Parse JSON — be resilient to AI wrapping in backticks
+  let cleaned = text.trim().replace(/^```json\s*/, '').replace(/```$/, '').trim();
+  // Find first { and last }
+  const start = cleaned.indexOf('{');
+  const end = cleaned.lastIndexOf('}');
+  if (start >= 0 && end > start) cleaned = cleaned.slice(start, end + 1);
+  let parsed;
+  try { parsed = JSON.parse(cleaned); }
+  catch (e) { throw new Error('Bad JSON from model: ' + cleaned.slice(0, 120)); }
+  if (!parsed.title || !parsed.body) throw new Error('Missing title/body in response');
+  return { title: parsed.title.trim(), body: parsed.body.trim() };
+}
+
+// ============================================================
+// SHARE CARDS
+// ============================================================
+function openShareModal(poem, scope, records) {
+  state.ui.sharePoem = { poem, scope, records };
+  const picker = document.getElementById('card-picker');
+  picker.innerHTML = '';
+  const lang = poem.lang || 'en';
+  const dateLabel = formatCardDate(poem, scope, lang);
+
+  // Determine "today's mood color" for the Tint card — use dominant mood across records
+  const moodCounts = {};
+  records.forEach(r => r.mood && (moodCounts[r.mood] = (moodCounts[r.mood]||0)+1));
+  let domMood = Object.entries(moodCounts).sort((a,b)=>b[1]-a[1])[0];
+  domMood = domMood ? MOODS.find(m=>m.key===domMood[0]) : MOODS[2]; // default plain
+
+  const styles = [
+    { cls: 'editorial', label: t('style_editorial'), bg: null },
+    { cls: 'night',     label: t('style_night'),     bg: null },
+    { cls: 'tint',      label: t('style_tint'),      bg: domMood.tint, moodName: domMood[lang] },
+  ];
+  styles.forEach((s, idx) => {
+    const opt = document.createElement('div');
+    opt.className = 'card-option';
+    opt.innerHTML = `<div class="opt-label"><span class="name">${String.fromCharCode(65+idx)} · ${s.label}</span><span class="meta">${s.cls === 'tint' && s.moodName ? s.moodName : ''}</span></div>`;
+    const card = document.createElement('div');
+    card.className = `share-card ${s.cls}`;
+    card.id = `card-${s.cls}`;
+    if (s.bg) card.style.background = s.bg;
+    card.innerHTML = `
+      <div class="scp"><span class="t">${escapeHtml(poem.title)}</span>${escapeHtml(poem.body)}</div>
+      <div class="scm">
+        <span>${dateLabel}</span>
+        <span class="brand"><span class="scm-mark"><i></i><i></i><i></i></span>碎碎念</span>
+      </div>`;
+    card.onclick = () => shareCard(card, poem.title);
+    opt.appendChild(card);
+    picker.appendChild(opt);
+  });
+
+  openModal('share');
+}
+
+function formatCardDate(poem, scope, lang) {
+  // Daily: use yesterday. Weekly: use the week range. Monthly: this month.
+  if (scope === 'daily') {
+    const y = yesterdayObj();
+    if (lang === 'zh') return `${y.getFullYear()}年${y.getMonth()+1}月${y.getDate()}日`;
+    return `${I18N.en.month_short[y.getMonth()]} ${y.getDate()}, ${y.getFullYear()}`;
+  } else if (scope === 'weekly') {
+    const ws = weekStart(yesterdayObj());
+    const we = addDays(ws, 6);
+    if (lang === 'zh') return `${ws.getMonth()+1}月${ws.getDate()}–${we.getDate()}日`;
+    return `${I18N.en.month_short[ws.getMonth()]} ${ws.getDate()}–${we.getDate()}, ${ws.getFullYear()}`;
+  } else {
+    const t0 = todayObj();
+    if (lang === 'zh') return `${t0.getFullYear()}年${t0.getMonth()+1}月`;
+    return `${I18N.en.months[t0.getMonth()]} ${t0.getFullYear()}`;
+  }
+}
+
+async function shareCard(cardEl, title) {
+  if (typeof html2canvas !== 'function') { toast(t('download_failed')); return; }
+  try {
+    await document.fonts.ready;
+    const canvas = await html2canvas(cardEl, {
+      backgroundColor: null, scale: 3, useCORS: true, logging: false,
+    });
+    const filename = `murmur-${(title || 'poem').replace(/[^\w一-鿿]+/g,'_')}.png`;
+    // Convert canvas to blob → File
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    if (!blob) throw new Error('canvas → blob failed');
+    const file = new File([blob], filename, { type: 'image/png' });
+
+    // Prefer native share when files are supported (iOS Safari / Android Chrome)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: '碎碎念 · Murmur',
+          text: title || '',
+        });
+        toast(t('shared'));
+        closeModal('share');
+        return;
+      } catch (e) {
+        if (e.name === 'AbortError') return; // user cancelled — do nothing
+        // any other error: fall through to download
+        console.warn('share failed, falling back to download', e);
+      }
+    }
+
+    // Fallback: download as PNG (desktop / browsers without file share)
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.download = filename;
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 500);
+    toast(t('saved_image'));
+  } catch (e) {
+    console.error(e);
+    toast(t('download_failed'));
+  }
+}
+
+// ============================================================
+// MODALS
+// ============================================================
+function openModal(name) {
+  const bd = document.getElementById(`modal-${name}-bd`);
+  if (!bd) return;
+  bd.classList.add('open');
+  if (name === 'settings') renderSettings();
+}
+function closeModal(name) {
+  const bd = document.getElementById(`modal-${name}-bd`);
+  if (bd) bd.classList.remove('open');
+}
+
+function renderSettings() {
+  document.getElementById('api-key-input').value = state.settings.apiKey || '';
+  document.querySelectorAll('#settings-lang .chip').forEach(c =>
+    c.classList.toggle('selected', c.dataset.lang === state.settings.language));
+  document.querySelectorAll('#settings-model .chip').forEach(c =>
+    c.classList.toggle('selected', c.dataset.model === (state.settings.model || 'claude-opus-4-7')));
+}
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+function applyLanguage() {
+  const lang = state.settings.language;
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : 'en';
+  document.getElementById('lang-en').classList.toggle('on', lang === 'en');
+  document.getElementById('lang-zh').classList.toggle('on', lang === 'zh');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (I18N[lang][k]) el.textContent = I18N[lang][k];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const k = el.dataset.i18nPlaceholder;
+    if (I18N[lang][k]) el.placeholder = I18N[lang][k];
+  });
+  // Re-render whatever view is active
+  const activeView = document.querySelector('.view.active');
+  if (activeView) switchView(activeView.dataset.view);
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+// ============================================================
+// EVENT BINDINGS
+// ============================================================
+function bindEvents() {
+  document.querySelectorAll('.tab').forEach(b => b.onclick = () => switchView(b.dataset.tab));
+  document.getElementById('lang-toggle').onclick = () => {
+    state.settings.language = state.settings.language === 'en' ? 'zh' : 'en';
+    save(); applyLanguage();
+  };
+  document.getElementById('open-settings').onclick = () => openModal('settings');
+  document.querySelectorAll('[data-close]').forEach(el =>
+    el.onclick = () => closeModal(el.dataset.close));
+  document.querySelectorAll('.modal-backdrop').forEach(bd => {
+    bd.onclick = (e) => { if (e.target === bd) bd.classList.remove('open'); };
+  });
+
+  // Today: note save on input
+  document.getElementById('today-note').addEventListener('input', e => {
+    const [key, rec] = getOrInitTodayRecord();
+    rec.note = e.target.value;
+    saveRecord(key, rec);
+  });
+
+  // Today: refresh + save
+  document.getElementById('refresh-subs').onclick = refreshSubs;
+  document.getElementById('refresh-objects').onclick = refreshObjects;
+  document.getElementById('save-btn').onclick = commitTodaySave;
+
+  // Calendar nav
+  document.getElementById('cal-prev').onclick = () => {
+    state.ui.calendarDate = new Date(state.ui.calendarDate.getFullYear(), state.ui.calendarDate.getMonth() - 1, 1);
+    renderCalendar();
+  };
+  document.getElementById('cal-next').onclick = () => {
+    state.ui.calendarDate = new Date(state.ui.calendarDate.getFullYear(), state.ui.calendarDate.getMonth() + 1, 1);
+    renderCalendar();
+  };
+  document.getElementById('cal-today').onclick = () => {
+    state.ui.calendarDate = todayObj();
+    state.ui.selectedDate = iso(todayObj());
+    renderCalendar();
+  };
+
+  // Poem scope
+  document.querySelectorAll('#poem-seg button').forEach(b =>
+    b.onclick = () => { state.ui.poemScope = b.dataset.scope; renderPoem(); });
+
+  // Settings
+  document.getElementById('api-key-input').addEventListener('input', e => {
+    state.settings.apiKey = e.target.value.trim(); save();
+  });
+  document.querySelectorAll('#settings-lang .chip').forEach(c => c.onclick = () => {
+    state.settings.language = c.dataset.lang; save(); applyLanguage(); renderSettings();
+  });
+  document.querySelectorAll('#settings-model .chip').forEach(c => c.onclick = () => {
+    state.settings.model = c.dataset.model; save(); renderSettings();
+  });
+  document.getElementById('reset-demo').onclick = () => {
+    state.records = {}; state.poems = { daily: {}, weekly: {}, monthly: {} };
+    seedDemo(); save();
+    toast(t('demo_seeded'));
+    const activeView = document.querySelector('.view.active');
+    if (activeView) switchView(activeView.dataset.view);
+  };
+  document.getElementById('clear-all').onclick = () => {
+    if (!confirm(state.settings.language === 'zh' ? '清空所有记录?这不可恢复。' : 'Clear everything? This cannot be undone.')) return;
+    state.records = {}; state.poems = { daily: {}, weekly: {}, monthly: {} };
+    save();
+    toast(t('cleared'));
+    const activeView = document.querySelector('.view.active');
+    if (activeView) switchView(activeView.dataset.view);
+  };
+}
+
+// ============================================================
+// BOOTSTRAP
+// ============================================================
+function init() {
+  load();
+  if (!state.settings.apiKey) state.settings.apiKey = DEFAULT_API_KEY;
+  if (Object.keys(state.records).length === 0) seedDemo();
+  save();
+  bindEvents();
+  applyLanguage();
+  switchView('today');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

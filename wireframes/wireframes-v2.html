@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>主题 · Wireframes v2</title>
+<style>
+  :root {
+    --bg: #ececea;
+    --frame: #ffffff;
+    --ink: #0e0e10;
+    --ink-2: #5b5d60;
+    --ink-3: #a0a2a5;
+    --line: #e2e2df;
+    --line-soft: #ededeb;
+    --hair: #1a1a1c;
+    --accent: #2f4a3a;
+    --accent-soft: #e6ece7;
+    --chip: #f3f3f1;
+
+    /* tag colors — kept muted, used ONLY in calendar dots and selected sub-tag chips */
+    --t-work:   #2b3340;
+    --t-play:   #b88a2a;
+    --t-rest:   #a8a499;
+    --t-travel: #3f6e62;
+    --t-photo:  #b25c47;
+    --t-learn:  #5e4f7a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    font-family: "PingFang SC", -apple-system, "Helvetica Neue", "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" on;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 56px 44px 96px; }
+
+  header.title {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 48px;
+  }
+  header.title h1 {
+    font-weight: 500; font-size: 22px; letter-spacing: 0.5px; margin: 0;
+  }
+  header.title h1 em {
+    font-style: normal; color: var(--ink-3); margin-left: 14px; font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 400;
+  }
+  header.title .meta { color: var(--ink-3); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .lede { color: var(--ink-2); font-size: 13.5px; line-height: 1.75; max-width: 700px; margin: -20px 0 48px; }
+  .lede b { color: var(--ink); font-weight: 500; }
+
+  .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .frame-col { display: flex; flex-direction: column; }
+  .frame-label {
+    font-size: 10.5px; letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 10px;
+  }
+  .frame-title { font-size: 16px; font-weight: 500; margin: 0 0 22px; letter-spacing: -0.1px; }
+
+  .device {
+    background: var(--frame); border: 1px solid var(--line); border-radius: 18px;
+    padding: 24px 20px 32px; aspect-ratio: 9/19; display: flex; flex-direction: column;
+  }
+
+  .status {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10.5px; color: var(--ink-3); letter-spacing: 0.4px; margin-bottom: 22px;
+    text-transform: lowercase;
+  }
+
+  /* ---- Screen 1 ---- */
+  .day-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 26px; }
+  .day-num { font-size: 64px; line-height: 0.85; font-weight: 200; letter-spacing: -2.5px; }
+  .day-meta { text-align: right; font-size: 11px; color: var(--ink-2); line-height: 1.6; }
+  .day-meta .month { display: block; color: var(--ink-3); font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 2px; }
+
+  .section-label {
+    font-size: 11px; color: var(--ink-2); margin: 0 0 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .section-label .ai-mark {
+    font-size: 9.5px; color: var(--accent); border: 1px solid var(--accent-soft);
+    padding: 2px 7px; border-radius: 999px; letter-spacing: 0.6px;
+  }
+  .section-label .hint { color: var(--ink-3); font-size: 10.5px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
+  .chip {
+    font-size: 12.5px; padding: 6px 11px; border: 1px solid var(--line);
+    border-radius: 6px; color: var(--ink); background: transparent; line-height: 1;
+  }
+  .chip.muted { color: var(--ink-3); }
+  .chip.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip.ai { border-style: dashed; border-color: #d6d6d3; color: var(--ink-2); }
+  .chip.ai.selected { background: var(--accent); border-color: var(--accent); color: #fff; border-style: solid; }
+
+  /* the escape hatch */
+  .one-line {
+    margin-top: 4px; padding: 10px 12px; border: 1px dashed var(--line);
+    border-radius: 6px; font-size: 12px; color: var(--ink-3);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .one-line .plus { font-size: 14px; color: var(--ink-2); }
+  .one-line .demo {
+    color: var(--ink); font-style: normal; flex: 1;
+    border-bottom: 1px solid var(--line-soft); padding-bottom: 1px;
+  }
+
+  .footer-cta {
+    margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+    padding-top: 16px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-2);
+  }
+  .footer-cta .save { color: var(--ink-3); font-size: 10.5px; letter-spacing: 0.4px; }
+  .footer-cta .next { font-weight: 500; }
+
+  /* ---- Screen 2 ---- */
+  .cal-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; }
+  .cal-head .month-name { font-size: 32px; font-weight: 300; letter-spacing: -1px; }
+  .cal-head .nav { color: var(--ink-3); font-size: 13px; letter-spacing: 2px; }
+  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .weekdays { font-size: 9.5px; color: var(--ink-3); letter-spacing: 0.5px; margin-bottom: 6px; }
+  .weekdays span { text-align: center; }
+  .cell {
+    aspect-ratio: 1/1.05; border: 1px solid var(--line-soft); border-radius: 3px;
+    padding: 4px 4px 5px; display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 10px; color: var(--ink-2);
+  }
+  .cell.faded { color: var(--ink-3); border-color: transparent; }
+  .cell .dot { width: 7px; height: 7px; border-radius: 999px; align-self: flex-end; }
+  .cell.today { border-color: var(--hair); border-width: 1.5px; }
+  .cell.empty .dot { background: transparent; border: 1px dashed var(--line); }
+
+  .t-work   { background: var(--t-work); }
+  .t-play   { background: var(--t-play); }
+  .t-rest   { background: var(--t-rest); }
+  .t-travel { background: var(--t-travel); }
+  .t-photo  { background: var(--t-photo); }
+  .t-learn  { background: var(--t-learn); }
+
+  .legend {
+    margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 5px 10px; font-size: 10.5px; color: var(--ink-2);
+  }
+  .legend .ll { display: flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 7px; height: 7px; border-radius: 999px; display: inline-block; }
+
+  .preview {
+    margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line-soft);
+    font-size: 11.5px; color: var(--ink-2); line-height: 1.55;
+  }
+  .preview .pdate { color: var(--ink-3); font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* ---- Screen 3 ---- */
+  .rep-head { margin-bottom: 18px; }
+  .rep-month { font-size: 36px; font-weight: 300; line-height: 1; letter-spacing: -1.5px; }
+  .rep-sub { font-size: 10px; color: var(--ink-3); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; }
+
+  .narrative { font-size: 13px; line-height: 1.85; color: var(--ink); margin-bottom: 22px; }
+  .narrative b { font-weight: 500; }
+  .narrative .accent { color: var(--accent); font-weight: 500; }
+
+  .stat-row { display: flex; flex-direction: column; gap: 7px; margin-bottom: 22px; }
+  .stat { display: grid; grid-template-columns: 50px 1fr 30px; align-items: center; gap: 10px; font-size: 11.5px; }
+  .stat .name { color: var(--ink-2); }
+  .stat .bar { height: 4px; background: var(--line-soft); border-radius: 999px; overflow: hidden; }
+  .stat .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; }
+  .stat .num { text-align: right; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  .heat { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 5px; }
+  .heat .h { aspect-ratio: 1/1; border-radius: 2px; background: var(--line-soft); }
+  .heat .h.l1 { background: #d8dcd6; }
+  .heat .h.l2 { background: #aab1a4; }
+  .heat .h.l3 { background: #6a7669; }
+  .heat .h.l4 { background: var(--accent); }
+  .heat-label { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--ink-3); margin-top: 4px; letter-spacing: 0.5px; }
+
+  .observe {
+    background: #f6f6f4; border: 1px solid var(--line-soft); border-radius: 4px;
+    padding: 14px 14px 13px; font-size: 12px; line-height: 1.7; color: var(--ink);
+  }
+  .observe .tag {
+    font-size: 9.5px; color: var(--accent); letter-spacing: 1.4px;
+    text-transform: uppercase; display: block; margin-bottom: 6px;
+  }
+
+  /* notes */
+  .notes {
+    margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line);
+    font-size: 12px; line-height: 1.75; color: var(--ink-2);
+  }
+  .notes ol { margin: 0; padding-left: 16px; }
+  .notes li { margin-bottom: 5px; }
+  .notes b { color: var(--ink); font-weight: 500; }
+
+  /* delta callout */
+  .delta {
+    background: #fbfbfa; border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px; margin-bottom: 40px; font-size: 12.5px; line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .delta h3 { margin: 0 0 8px; font-size: 11px; font-weight: 500; color: var(--ink); letter-spacing: 1px; text-transform: uppercase; }
+  .delta b { color: var(--ink); font-weight: 500; }
+  .delta .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; margin-bottom: 4px; }
+  .delta .row .k { color: var(--ink-3); }
+
+  footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 11px; display: flex; justify-content: space-between; letter-spacing: 0.4px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="title">
+    <h1>主题 <em>Wireframes · v2</em></h1>
+    <div class="meta">2026.05.24 · 风格调整 + 一句话入口</div>
+  </header>
+
+  <p class="lede">
+    相对 v1 改了视觉:全 sans、冷灰底、白卡 hairline、单色深墨绿 accent。颜色让位给数据——UI 自身保持灰阶,只在日历 tag dots 和被选中的反思标签上出现颜色。
+    并在记录页底部加入 <b>「+ 一句话」</b>逃生口,inline 展开,不打断流。
+  </p>
+
+  <div class="delta">
+    <h3>v1 → v2 变更</h3>
+    <div class="row"><span class="k">字体</span><span>移除 Times / Songti,改 PingFang + 系统 sans</span></div>
+    <div class="row"><span class="k">底色</span><span>米色纸感 <b>#f4f2ec</b> → 冷灰 <b>#ececea</b>,白卡 hairline 描边代替暖光阴影</span></div>
+    <div class="row"><span class="k">accent</span><span>terracotta <b>#b3553a</b> → 深墨绿 <b>#2f4a3a</b>,出现频率更低</span></div>
+    <div class="row"><span class="k">圆角</span><span>设备 28px → 18px;chip 999px → 6px(更规整,不像 chip 也更像 tag)</span></div>
+    <div class="row"><span class="k">数字</span><span>开启 tabular numerals,日期 24 用极细 200 字重</span></div>
+    <div class="row"><span class="k">逃生口</span><span>记录页底部加「+ 一句话」inline 输入,占一行,不弹窗</span></div>
+  </div>
+
+  <div class="frames">
+
+    <!-- ============== Screen 1: 记录页 ============== -->
+    <div class="frame-col">
+      <div class="frame-label">01 · Record</div>
+      <h2 class="frame-title">今天是什么样的一天</h2>
+
+      <div class="device">
+        <div class="status"><span>9:24</span><span>记录 · today</span></div>
+
+        <div class="day-head">
+          <div class="day-num">24</div>
+          <div class="day-meta">
+            <span class="month">May · Sun</span>
+            周日 · 第 21 周
+          </div>
+        </div>
+
+        <div class="section-label"><span>主题 · 选 1–2 个</span></div>
+        <div class="chips">
+          <span class="chip selected">工作</span>
+          <span class="chip">玩</span>
+          <span class="chip">躺平</span>
+          <span class="chip">旅行</span>
+          <span class="chip">拍照</span>
+          <span class="chip">学习</span>
+          <span class="chip">社交</span>
+          <span class="chip">运动</span>
+          <span class="chip muted">+</span>
+        </div>
+
+        <div class="section-label"><span>心情</span></div>
+        <div class="chips">
+          <span class="chip">很开心</span>
+          <span class="chip selected">很透支</span>
+          <span class="chip">平淡</span>
+          <span class="chip">沮丧</span>
+          <span class="chip">焦虑</span>
+          <span class="chip muted">+</span>
+        </div>
+
+        <div class="section-label"><span>还想说的</span><span class="ai-mark">AI 建议</span></div>
+        <div class="chips">
+          <span class="chip ai selected">有收获</span>
+          <span class="chip ai">赚到钱了</span>
+          <span class="chip ai">还需多学习</span>
+          <span class="chip ai">被会议淹没</span>
+          <span class="chip ai">想换状态</span>
+        </div>
+
+        <div class="one-line">
+          <span class="plus">+</span>
+          <span class="demo">想多说一句…(可选)</span>
+        </div>
+
+        <div class="footer-cta">
+          <span class="save">已自动保存</span>
+          <span class="next">查看本周 →</span>
+        </div>
+      </div>
+
+      <div class="notes">
+        <ol>
+          <li><b>「+ 一句话」放在最底</b>,虚线、灰字,姿态克制。tap 后 inline 展开成单行输入,不弹窗、不跳页。</li>
+          <li>它是<b>逃生口</b>,不是必填项——视觉上不能跟标签争注意力。</li>
+          <li>这一句话会进周报/月报供 AI 阅读,但不会公开显示在日历里(避免变成日记)。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== Screen 2: 日历页 ============== -->
+    <div class="frame-col">
+      <div class="frame-label">02 · Calendar</div>
+      <h2 class="frame-title">这个月长什么样</h2>
+
+      <div class="device">
+        <div class="status"><span>9:24</span><span>日历</span></div>
+
+        <div class="cal-head">
+          <div class="month-name">5月</div>
+          <div class="nav">‹ &nbsp; · &nbsp; ›</div>
+        </div>
+
+        <div class="weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+
+        <div class="grid">
+          <div class="cell faded"><span>27</span><span class="dot"></span></div>
+          <div class="cell faded"><span>28</span><span class="dot"></span></div>
+          <div class="cell faded"><span>29</span><span class="dot"></span></div>
+          <div class="cell faded"><span>30</span><span class="dot"></span></div>
+          <div class="cell"><span>1</span><span class="dot t-rest"></span></div>
+          <div class="cell"><span>2</span><span class="dot t-travel"></span></div>
+          <div class="cell"><span>3</span><span class="dot t-travel"></span></div>
+
+          <div class="cell"><span>4</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>5</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>6</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>7</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>8</span><span class="dot t-photo"></span></div>
+          <div class="cell"><span>9</span><span class="dot t-play"></span></div>
+          <div class="cell"><span>10</span><span class="dot t-rest"></span></div>
+
+          <div class="cell"><span>11</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>12</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>13</span><span class="dot t-learn"></span></div>
+          <div class="cell"><span>14</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>15</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>16</span><span class="dot t-play"></span></div>
+          <div class="cell"><span>17</span><span class="dot t-rest"></span></div>
+
+          <div class="cell"><span>18</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>19</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>20</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>21</span><span class="dot t-work"></span></div>
+          <div class="cell"><span>22</span><span class="dot t-photo"></span></div>
+          <div class="cell"><span>23</span><span class="dot t-play"></span></div>
+          <div class="cell today"><span>24</span><span class="dot t-work"></span></div>
+
+          <div class="cell empty faded"><span>25</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>26</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>27</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>28</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>29</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>30</span><span class="dot"></span></div>
+          <div class="cell empty faded"><span>31</span><span class="dot"></span></div>
+        </div>
+
+        <div class="legend">
+          <span class="ll"><i class="dot t-work"></i> 工作</span>
+          <span class="ll"><i class="dot t-play"></i> 玩</span>
+          <span class="ll"><i class="dot t-rest"></i> 躺平</span>
+          <span class="ll"><i class="dot t-travel"></i> 旅行</span>
+          <span class="ll"><i class="dot t-photo"></i> 拍照</span>
+          <span class="ll"><i class="dot t-learn"></i> 学习</span>
+        </div>
+
+        <div class="preview">
+          <div class="pdate">5月23日 · 周六</div>
+          玩 · 很开心 · 难得放空
+        </div>
+      </div>
+
+      <div class="notes">
+        <ol>
+          <li>颜色和 v1 思路一致:<b>编码主标签,不编码情绪</b>。情绪走势放月报里看更合适。</li>
+          <li>圆角更小,色块更克制——整体读起来像一张<b>表</b>而不是一束花。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============== Screen 3: 月报页 ============== -->
+    <div class="frame-col">
+      <div class="frame-label">03 · Monthly</div>
+      <h2 class="frame-title">这个月,你过成了什么样</h2>
+
+      <div class="device">
+        <div class="status"><span>9:24</span><span>月报 · 5月</span></div>
+
+        <div class="rep-head">
+          <div class="rep-month">5月</div>
+          <div class="rep-sub">2026 · 月度回顾</div>
+        </div>
+
+        <div class="narrative">
+          这个月你记录了 <b>23</b> 天。<br/>
+          其中 <b>13 天</b>是工作,<b>4 天</b>在玩,<br/>
+          <b>3 天</b>躺平,旅行了 <b>2 天</b>。<br/><br/>
+          <span class="accent">透支</span>出现了 <b>5 次</b>,<br/>
+          几乎都在周三、周四。
+        </div>
+
+        <div class="section-label"><span>主题分布</span></div>
+        <div class="stat-row">
+          <div class="stat"><span class="name">工作</span><span class="bar"><i style="width: 86%"></i></span><span class="num">13</span></div>
+          <div class="stat"><span class="name">玩</span><span class="bar"><i style="width: 27%"></i></span><span class="num">4</span></div>
+          <div class="stat"><span class="name">躺平</span><span class="bar"><i style="width: 20%"></i></span><span class="num">3</span></div>
+          <div class="stat"><span class="name">旅行</span><span class="bar"><i style="width: 13%"></i></span><span class="num">2</span></div>
+          <div class="stat"><span class="name">拍照</span><span class="bar"><i style="width: 13%"></i></span><span class="num">2</span></div>
+        </div>
+
+        <div class="section-label"><span>心情走势</span><span class="hint">深 = 透支</span></div>
+        <div class="heat">
+          <div class="h l1"></div><div class="h l2"></div><div class="h l3"></div><div class="h l3"></div><div class="h l2"></div><div class="h l1"></div><div class="h"></div>
+          <div class="h l2"></div><div class="h l3"></div><div class="h l4"></div><div class="h l4"></div><div class="h l3"></div><div class="h l1"></div><div class="h l1"></div>
+          <div class="h l2"></div><div class="h l3"></div><div class="h l3"></div><div class="h l4"></div><div class="h l2"></div><div class="h l1"></div><div class="h"></div>
+          <div class="h l3"></div><div class="h l3"></div><div class="h l4"></div><div class="h l3"></div><div class="h l2"></div><div class="h"></div><div class="h"></div>
+        </div>
+        <div class="heat-label"><span>5 / 1</span><span>5 / 24</span></div>
+
+        <div class="observe" style="margin-top: 22px;">
+          <span class="tag">AI 观察</span>
+          连续三周,周三是你最累的一天;但每个周六都恢复得不错——下个月可以试试把高强度任务前移。
+        </div>
+
+        <div class="footer-cta" style="margin-top: 16px;">
+          <span class="save">导出 PDF</span>
+          <span class="next">看上个月 →</span>
+        </div>
+      </div>
+
+      <div class="notes">
+        <ol>
+          <li>叙事仍在最上,数字带着上下文走。</li>
+          <li>heatmap 的色相换成 accent 同色系,跟整页保持一根色绳。</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>主题 / Zhuti · Wireframes v2</span>
+    <span>v1 在同目录下 wireframes-v1.html 可对照</span>
+  </footer>
+</div>
+</body>
+</html>
