@@ -327,48 +327,76 @@
   .btn.danger { color: #a23030; border-color: #f1d3d3; }
   .btn.danger:hover { background: #fbf0f0; }
 
-  /* ============ SHARE CARDS ============ */
-  .card-picker { display: flex; flex-direction: column; gap: 18px; }
-  .card-option { display: flex; flex-direction: column; gap: 8px; }
+  /* ============ SHARE: small previews ============ */
+  .card-picker { display: flex; flex-direction: column; gap: 12px; }
+  .card-option { display: flex; flex-direction: column; gap: 6px; }
   .card-option .opt-label { font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-3); display: flex; justify-content: space-between; align-items: center; }
   .card-option .opt-label .name { color: var(--ink); font-weight: 500; }
-  .card-option .opt-label .meta { color: var(--ink-3); font-weight: 400; }
 
-  .share-card {
-    aspect-ratio: 4/5; border-radius: 8px;
-    padding: 38px 32px; display: flex; flex-direction: column;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 12px 28px -16px rgba(40,30,15,0.16);
-    cursor: pointer; transition: transform 0.15s ease;
+  .preview-strip {
+    width: 100%; padding: 18px 22px 16px; border-radius: 8px;
+    cursor: pointer; transition: transform 0.12s ease;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 110px; text-align: left;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 16px -10px rgba(40,30,15,0.14);
   }
-  .share-card:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 16px 36px -16px rgba(40,30,15,0.22); }
-
-  .share-card .scp {
+  .preview-strip:hover { transform: translateY(-1px); }
+  .preview-strip:active { transform: scale(0.99); }
+  .preview-strip .ptitle {
     font-family: "Cormorant Garamond", "Noto Serif SC", serif;
-    font-size: 19px; line-height: 2; letter-spacing: 0.2px;
-    margin: auto 0; white-space: pre-line;
+    font-size: 22px; font-weight: 500; letter-spacing: 0.4px;
+    line-height: 1.2;
   }
-  .share-card .scp .t {
-    display: block; font-size: 1.35em; font-weight: 500; margin-bottom: 0.9em; letter-spacing: 0.5px;
+  .preview-strip .pbody {
+    font-family: "Cormorant Garamond", "Noto Serif SC", serif;
+    font-size: 13px; line-height: 1.5; opacity: 0.6;
+    margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .share-card .scm {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase;
+  .preview-strip .pbrand {
+    display: flex; align-items: center; gap: 6px;
+    font-family: "PingFang SC", "Inter", sans-serif; font-size: 10.5px;
+    font-weight: 500; letter-spacing: 0.3px; margin-top: 10px; opacity: 0.65;
   }
-  .share-card .scm .brand {
-    font-family: "PingFang SC", "Inter", sans-serif; font-weight: 500;
-    letter-spacing: 0.4px; text-transform: none; font-size: 11px;
-    display: inline-flex; align-items: center;
-  }
-  .share-card .scm .brand .sub { opacity: 0.5; margin-left: 5px; font-weight: 400; font-size: 9.5px; letter-spacing: 0.3px; }
+  .preview-strip .pbrand .pmk { display: inline-flex; gap: 3px; }
+  .preview-strip .pbrand .pmk i { width: 3px; height: 3px; border-radius: 999px; background: currentColor; }
 
-  .share-card.editorial { background: #ffffff; border: 1px solid var(--line); color: var(--ink); }
-  .share-card.editorial .scm { color: var(--ink-3); }
-  .share-card.night { background: #0e0e10; color: #efece4; }
-  .share-card.night .scm { color: #6b6960; }
-  .share-card.night .scm .brand { color: #efece4; }
-  .share-card.tint { color: #1a221c; border: 1px solid rgba(0,0,0,0.06); }
-  .share-card.tint .scm { color: rgba(26,34,28,0.55); }
-  .share-card.tint .scm .brand { color: #1a221c; }
+  .preview-strip.editorial { background: #ffffff; border: 1px solid var(--line); color: var(--ink); }
+  .preview-strip.night     { background: #0e0e10; color: #efece4; }
+  .preview-strip.tint      { color: #1a221c; border: 1px solid rgba(0,0,0,0.06); }
+
+  /* ============ SHARE: full hidden render card (1080×1920 phone-shaped) ============ */
+  .share-card-render {
+    position: fixed; left: -20000px; top: 0;
+    width: 1080px; height: 1920px;
+    padding: 140px 100px 110px;
+    display: flex; flex-direction: column;
+    font-family: "Cormorant Garamond", "Noto Serif SC", "Source Han Serif SC", serif;
+    box-sizing: border-box;
+  }
+  .share-card-render.editorial { background: #ffffff; color: var(--ink); }
+  .share-card-render.night     { background: #0e0e10; color: #efece4; }
+  .share-card-render.tint      { color: #1a221c; }
+  .share-card-render .full-poem {
+    margin: auto 0; white-space: pre-line;
+    font-size: 40px; line-height: 1.95; letter-spacing: 0.5px; font-weight: 400;
+  }
+  .share-card-render .full-poem .ftitle {
+    display: block; font-size: 68px; font-weight: 500;
+    margin-bottom: 48px; letter-spacing: 1.2px; line-height: 1;
+  }
+  .share-card-render .full-meta {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: "PingFang SC", "Inter", sans-serif;
+  }
+  .share-card-render .full-meta .fbrand {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 24px; font-weight: 500; letter-spacing: 1.2px;
+  }
+  .share-card-render .full-meta .fbrand .fmk { display: inline-flex; gap: 8px; align-items: center; }
+  .share-card-render .full-meta .fbrand .fmk i { width: 9px; height: 9px; border-radius: 999px; background: currentColor; display: inline-block; }
+  .share-card-render .full-meta .fdate {
+    font-size: 20px; letter-spacing: 1.8px; text-transform: uppercase; opacity: 0.55;
+  }
 
   /* loading dots */
   .loading-dots::after { content: "···"; display: inline-block; animation: dots 1.4s infinite; }
@@ -517,6 +545,9 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Hidden, off-screen 1080×1920 element used only for image rendering -->
+<div class="share-card-render" id="share-card-render" aria-hidden="true"></div>
 
 <script>
 // ============================================================
@@ -1427,11 +1458,14 @@ function openShareModal(poem, scope, records) {
   const lang = poem.lang || 'en';
   const dateLabel = formatCardDate(poem, scope, lang);
 
-  // Determine "today's mood color" for the Tint card — use dominant mood across records
+  // Dominant mood across the period → tint color
   const moodCounts = {};
   records.forEach(r => r.mood && (moodCounts[r.mood] = (moodCounts[r.mood]||0)+1));
   let domMood = Object.entries(moodCounts).sort((a,b)=>b[1]-a[1])[0];
-  domMood = domMood ? MOODS.find(m=>m.key===domMood[0]) : MOODS[2]; // default plain
+  domMood = domMood ? MOODS.find(m=>m.key===domMood[0]) : MOODS[2];
+
+  // Preview: only title + 1 line of body. Just enough to feel the style.
+  const firstLine = (poem.body || '').split('\n').find(s => s.trim()) || '';
 
   const styles = [
     { cls: 'editorial', label: t('style_editorial'), bg: null },
@@ -1441,23 +1475,41 @@ function openShareModal(poem, scope, records) {
   styles.forEach((s, idx) => {
     const opt = document.createElement('div');
     opt.className = 'card-option';
-    opt.innerHTML = `<div class="opt-label"><span class="name">${String.fromCharCode(65+idx)} · ${s.label}</span><span class="meta">${s.cls === 'tint' && s.moodName ? s.moodName : ''}</span></div>`;
-    const card = document.createElement('div');
-    card.className = `share-card ${s.cls}`;
-    card.id = `card-${s.cls}`;
-    if (s.bg) card.style.background = s.bg;
-    card.innerHTML = `
-      <div class="scp"><span class="t">${escapeHtml(poem.title)}</span>${escapeHtml(poem.body)}</div>
-      <div class="scm">
-        <span>${dateLabel}</span>
-        <span class="brand"><span class="scm-mark"><i></i><i></i><i></i></span>碎碎念</span>
+    opt.innerHTML = `<div class="opt-label"><span class="name">${String.fromCharCode(65+idx)} · ${s.label}</span></div>`;
+    const strip = document.createElement('button');
+    strip.className = `preview-strip ${s.cls}`;
+    if (s.bg) strip.style.background = s.bg;
+    strip.innerHTML = `
+      <div>
+        <div class="ptitle">${escapeHtml(poem.title)}</div>
+        <div class="pbody">${escapeHtml(firstLine)}</div>
+      </div>
+      <div class="pbrand">
+        <span class="pmk"><i></i><i></i><i></i></span>碎碎念
       </div>`;
-    card.onclick = () => shareCard(card, poem.title);
-    opt.appendChild(card);
+    strip.onclick = () => renderAndShare(s, poem, dateLabel);
+    opt.appendChild(strip);
     picker.appendChild(opt);
   });
 
   openModal('share');
+}
+
+function renderAndShare(style, poem, dateLabel) {
+  const renderEl = document.getElementById('share-card-render');
+  renderEl.className = `share-card-render ${style.cls}`;
+  renderEl.style.background = style.bg || '';
+  renderEl.innerHTML = `
+    <div class="full-poem">
+      <span class="ftitle">${escapeHtml(poem.title)}</span>${escapeHtml(poem.body)}
+    </div>
+    <div class="full-meta">
+      <span class="fbrand">
+        <span class="fmk"><i></i><i></i><i></i></span>碎碎念
+      </span>
+      <span class="fdate">${dateLabel}</span>
+    </div>`;
+  shareCard(renderEl, poem.title);
 }
 
 function formatCardDate(poem, scope, lang) {
@@ -1482,8 +1534,10 @@ async function shareCard(cardEl, title) {
   if (typeof html2canvas !== 'function') { toast(t('download_failed')); return; }
   try {
     await document.fonts.ready;
+    // The render element is already at native phone size (1080×1920), so scale 1.
     const canvas = await html2canvas(cardEl, {
-      backgroundColor: null, scale: 3, useCORS: true, logging: false,
+      backgroundColor: null, scale: 1, useCORS: true, logging: false,
+      windowWidth: 1080, windowHeight: 1920,
     });
     const filename = `murmur-${(title || 'poem').replace(/[^\w一-鿿]+/g,'_')}.png`;
     // Convert canvas to blob → File
