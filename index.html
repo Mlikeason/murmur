@@ -44,17 +44,24 @@
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    margin: 0; padding: 0;
+    background: var(--frame);                /* match app — no grey bleed */
+    color: var(--ink);
     font-family: "Inter", -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
     -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" on;
+    height: 100%;
+    overflow: hidden;                        /* body never scrolls — only .app-main does */
     overscroll-behavior: none;
   }
   button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; color: inherit; }
   input, textarea { font-family: inherit; font-size: inherit; color: inherit; }
 
   .app {
-    min-height: 100vh; background: var(--frame);
+    height: 100vh;                           /* fallback */
+    height: 100dvh;                          /* dynamic viewport — accurate when status bar/keyboard appears */
+    background: var(--frame);
     display: flex; flex-direction: column; position: relative;
+    padding-top: env(safe-area-inset-top, 0); /* push below the iOS status bar / notch */
   }
 
   /* HEADER */
@@ -86,7 +93,7 @@
   .icon-btn:hover { background: var(--line-soft); color: var(--ink); }
 
   /* MAIN */
-  .app-main { flex: 1; padding: 8px 22px 92px; overflow-y: auto; }
+  .app-main { flex: 1; padding: 8px 22px 92px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .view { display: none; }
   .view.active { display: block; }
 
