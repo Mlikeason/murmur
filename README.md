@@ -11,14 +11,14 @@ You can save the poem as an image and share it.
 ## What's in here
 
 ```
-app/        # the working web app (single index.html, no build step)
-brand/      # logo & brand reference
-wireframes/ # design iterations v1 → v6, kept for the record
+index.html   # the working web app (single file, no build step)
+brand/       # logo & brand reference
+wireframes/  # design iterations v1 → v6, kept for the record
 ```
 
 ## Run it
 
-Open `app/index.html` in any modern browser. That's it.
+Open `index.html` in any modern browser, or deploy it as a static site (Vercel / Netlify / GitHub Pages all work — no config needed).
 
 To generate poems you need a Claude API key:
 1. Get one at [console.anthropic.com](https://console.anthropic.com/settings/keys)
