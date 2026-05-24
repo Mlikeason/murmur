@@ -40,12 +40,8 @@
   input, textarea { font-family: inherit; font-size: inherit; color: inherit; }
 
   .app {
-    max-width: 480px; margin: 0 auto; min-height: 100vh;
-    background: var(--frame); display: flex; flex-direction: column;
-    position: relative; box-shadow: 0 0 0 1px var(--line);
-  }
-  @media (min-width: 600px) {
-    .app { margin-top: 24px; margin-bottom: 24px; min-height: calc(100vh - 48px); border-radius: 18px; overflow: hidden; }
+    min-height: 100vh; background: var(--frame);
+    display: flex; flex-direction: column; position: relative;
   }
 
   /* HEADER */
@@ -272,7 +268,6 @@
   /* ============ TABBAR ============ */
   .tabbar {
     position: fixed; bottom: 0; left: 0; right: 0;
-    max-width: 480px; margin: 0 auto;
     background: rgba(255,255,255,0.94); backdrop-filter: blur(12px);
     border-top: 1px solid var(--line);
     display: flex; justify-content: space-around;
@@ -286,10 +281,6 @@
   .tab.active { color: var(--ink); font-weight: 500; }
   .tab .dot { display: inline-block; width: 4px; height: 4px; border-radius: 999px; background: var(--ink); margin-top: 4px; opacity: 0; }
   .tab.active .dot { opacity: 1; }
-
-  @media (min-width: 600px) {
-    .tabbar { position: absolute; max-width: none; left: 0; right: 0; }
-  }
 
   /* ============ MODALS ============ */
   .modal-backdrop {
